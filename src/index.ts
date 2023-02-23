@@ -1,9 +1,9 @@
 import { exec } from 'child_process';
 import { Command } from "commander";
-import inquirer from 'inquirer';
+import inquirer from "inquirer";
 
-import questions from "./questions/new-project.json" assert { type: "json" };
-import { readOutput } from "./utils.js";
+import { newProjectQuestions } from "./questions/new-project";
+import { readOutput } from "./utils";
 const program = new Command();
 
 interface Answers {
@@ -25,7 +25,7 @@ program
     "Package manager to use in the project. [npm, yarn, pnpm]"
   )*/
   .action(async () => {
-    const answers = inquirer.prompt<Answers>(questions).then((answers) => {
+    const answers = inquirer.prompt<Answers>(newProjectQuestions).then((answers) => {
       var p = exec("nest new -d " + answers.projectName + " -p " + answers.packageManager);
       console.log(answers);
       readOutput(p);
