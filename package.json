@@ -11,7 +11,9 @@
     "prebuild": "npm run clean",
     "build": "npx tsc",
     "start": "npx ts-node src/index.ts",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "run": "node dist/index.js",
+    "test": "npm run build && node dist/index.js"
   },
   "dependencies": {
     "commander": "^10.0.0",
