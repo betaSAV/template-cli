@@ -25,35 +25,32 @@ program
   .command("new")
   .alias("n")
   .description("Makes a default new project")
-  /*.argument("[projectName]", "name of the project.")
-  .option(
-    "-p, --package",
-    "Package manager to use in the project. [npm, yarn, pnpm]"
-  )*/
-  .action(async () => {
-    const answers = inquirer
-      .prompt<newAnswers>(newProjectQuestions)
-      .then((answers) => {
-        var p = exec(
-          "nest new -d " + answers.projectName + " -p " + answers.packageManager
-        );
-        console.log(answers);
-        readOutput(p);
-      });
+  .arguments("[projectName] [packageManager]")
+  .option("-d, --dry-run", "Run through without making any changes")
+  .action(async (projectName, packageManager) => {
+    if (!(projectName && packageManager)) {
+      const answers = await inquirer.prompt<newAnswers>(newProjectQuestions);
+      projectName = answers.projectName;
+      packageManager = answers.packageManager;
+    }
+    var p = exec("nest new -d " + projectName + " -p " + packageManager);
+    readOutput(p);
   });
 
 program
   .command("generate")
   .alias("g")
   .description("Generates a Nest element")
-  .action(async () => {
-    const answers = inquirer
-      .prompt<elmentAnswers>(newNestElements)
-      .then((answers) => {
-        var p = exec("nest generate -d " + answers.nestElement + " " + answers.elementName);
-        console.log(answers);
-        readOutput(p);
-      });
+  .arguments("[nestElement] [elementName]")
+  .option("-d, --dry-run", "Run through without making any changes")
+  .action(async (nestElement, elementName) => {
+    if (!(nestElement && elementName)) {
+      const answers = await inquirer.prompt<elmentAnswers>(newNestElements);
+      nestElement = answers.nestElement;
+      elementName = answers.elementName;
+    }
+    var p = exec("nest generate -d " + nestElement + " " + elementName);
+    readOutput(p);
   });
 
 program.parse();
