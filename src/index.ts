@@ -33,7 +33,7 @@ program
       projectName = answers.projectName;
       packageManager = answers.packageManager;
     }
-    var p = exec("nest new -d " + projectName + " -p " + packageManager);
+    const p = exec("nest new -d " + projectName + " -p " + packageManager);
     readOutput(p);
   });
 
@@ -49,7 +49,7 @@ program
       nestElement = answers.nestElement;
       elementName = answers.elementName;
     }
-    var p = exec("nest generate -d " + nestElement + " " + elementName);
+    const p = exec("nest generate -d " + nestElement + " " + elementName);
     readOutput(p);
   });
 

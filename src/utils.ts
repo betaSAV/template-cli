@@ -2,7 +2,7 @@ import { ChildProcess } from "child_process";
 
 
 export function readInput(p: ChildProcess) {
-    var stdin = process.stdin;
+    const stdin = process.stdin;
     stdin.setRawMode(true);
     stdin.resume();
     stdin.setEncoding("utf8");
