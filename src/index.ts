@@ -6,14 +6,23 @@ import { newProjectQuestions, newNestElements } from "./questions/new-project";
 import { readOutput } from "./utils";
 const program = new Command();
 
-interface newAnswers {
+interface NewAnswers {
   projectName: string;
-  packageManager: string;
+  packageManager: PackageManager;
 }
 
-interface elmentAnswers {
-  nestElement: string;
+enum PackageManager {
+  npm = "npm",
+  yarn = "yarn",
+  pnpm = "pnpm"
+}
+
+interface ElementAnswers {
   elementName: string;
+}
+
+interface ResourceOptions {
+  dryRun: boolean;
 }
 
 program
@@ -27,9 +36,9 @@ program
   .description("Makes a default new project")
   .arguments("[projectName] [packageManager]")
   .option("-d, --dry-run", "Run through without making any changes")
-  .action(async (projectName, packageManager) => {
+  .action(async (projectName: string, packageManager: PackageManager) => {
     if (!(projectName && packageManager)) {
-      const answers = await inquirer.prompt<newAnswers>(newProjectQuestions);
+      const answers = await inquirer.prompt<NewAnswers>(newProjectQuestions);
       projectName = answers.projectName;
       packageManager = answers.packageManager;
     }
@@ -38,18 +47,19 @@ program
   });
 
 program
-  .command("generate")
-  .alias("g")
-  .description("Generates a Nest element")
-  .arguments("[nestElement] [elementName]")
+  .command("resource")
+  .alias("res")
+  .description("Generates a Nest resource")
+  .arguments("[elementName]")
   .option("-d, --dry-run", "Run through without making any changes")
-  .action(async (nestElement, elementName) => {
-    if (!(nestElement && elementName)) {
-      const answers = await inquirer.prompt<elmentAnswers>(newNestElements);
-      nestElement = answers.nestElement;
+  .action(async (elementName: string, options: ResourceOptions) => {
+    if (!(elementName)) {
+      const answers = await inquirer.prompt<ElementAnswers>(newNestElements);
       elementName = answers.elementName;
     }
-    const p = exec("nest generate -d " + nestElement + " " + elementName);
+    console.log("Options: ", options);
+    console.log("Options: " + Object.keys(options).join(" "));
+    const p = exec("nest generate -d resource " + elementName);
     readOutput(p);
   });
 
