@@ -1,14 +1,6 @@
-import { exec } from "child_process";
 import { Command } from "commander";
-import inquirer from "inquirer";
-import { readOutput } from "../utils";
 import { handleProjectCommand } from "./project";
 import { handleResourceCommand } from "./resource";
-
-export interface ElmentAnswers {
-  nestElement: string;
-  elementName: string;
-}
 
 export class CLIBuilder {
   private static program: Command;
@@ -34,7 +26,10 @@ export class CLIBuilder {
       .description("Makes a default new project")
       .arguments("[projectName] [packageManager]")
       .option("-d, --dry-run", "Run through without making any changes")
-      .option("-g, --skip-git", "Skip git repository initialization. (default: false)")
+      .option(
+        "-g, --skip-git",
+        "Skip git repository initialization. (default: false)"
+      )
       .action(handleProjectCommand);
   }
 

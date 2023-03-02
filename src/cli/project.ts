@@ -1,7 +1,3 @@
-import { exec } from "child_process";
-import inquirer from "inquirer";
-import { readOutput } from "../utils";
-import { newProjectQuestions } from "./questions/project";
 import { IsAlpha, IsEnum } from "class-validator";
 import { validate } from "./validator";
 
@@ -18,10 +14,34 @@ export class ProjectChoices {
   packageManager: PackageManager;
 }
 
+interface ProjectOptions {
+  dryRun: boolean;
+  skipGit: boolean;
+}
+
+type OptionsMapping<T> = {
+  [key in keyof T]: string;
+};
+
+const toNestOptions: OptionsMapping<ProjectOptions> = {
+  dryRun: "-d",
+  skipGit: "-s",
+};
+
+const optionsToArgs = <T extends {}>(
+  options: T,
+  optionsMap: OptionsMapping<T>
+) =>
+  Object.keys(options)
+    .map((key: string) =>
+      options[key as keyof T] === true ? optionsMap[key as keyof T] : ""
+    )
+    .join(" ");
+
 export const handleProjectCommand = async (
   projectName: string,
   packageManager: PackageManager,
-  options: { dryRun: boolean, skipGit: boolean }
+  options: { dryRun: boolean; skipGit: boolean }
 ) => {
   const choices: ProjectChoices = {
     name: projectName,
@@ -37,26 +57,12 @@ export const handleProjectCommand = async (
     console.error(errors.join("\n"));
     return;
   }
-  const optionString = optionsToArgs(options, optionMap);
-  console.log("nest new"+ optionString + choices.name + " -p " + choices.packageManager);
+  console.log(options);
+  const optionString = optionsToArgs(options, toNestOptions);
+  console.log(optionString);
+  console.log(
+    "nest new " + optionString + choices.name + " -p " + choices.packageManager
+  );
   //const p = exec("nest new"+ optionString + choices.name + " -p " + choices.packageManager);
   //readOutput(p);
 };
-
-interface ProjectOptions {
-  dryRun: boolean;
-  skipGit: boolean;
-}
-
-const optionMap: { [key: string]: string } = {
-  dryRun: "-d",
-  skipGit: "-s",
-};
-
-function optionsToArgs(options: ProjectOptions, optionMap: { [key: string]: string }) {
-  let optionString = " ";
-  for (const option in options) {
-      optionString += `${optionMap[option]} `;
-  }
-  return optionString;
-}
