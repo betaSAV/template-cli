@@ -34,6 +34,7 @@ export class CLIBuilder {
       .description("Makes a default new project")
       .arguments("[projectName] [packageManager]")
       .option("-d, --dry-run", "Run through without making any changes")
+      .option("-g, --skip-git", "Skip git repository initialization. (default: false)")
       .action(handleProjectCommand);
   }
 

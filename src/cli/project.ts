@@ -20,7 +20,8 @@ export class ProjectChoices {
 
 export const handleProjectCommand = async (
   projectName: string,
-  packageManager: PackageManager
+  packageManager: PackageManager,
+  options: { dryRun: boolean, skipGit: boolean }
 ) => {
   const choices: ProjectChoices = {
     name: projectName,
@@ -36,8 +37,26 @@ export const handleProjectCommand = async (
     console.error(errors.join("\n"));
     return;
   }
-  const p = exec(
-    "nest new -d " + choices.name + " -p " + choices.packageManager
-  );
-  readOutput(p);
+  const optionString = optionsToArgs(options, optionMap);
+  console.log("nest new"+ optionString + choices.name + " -p " + choices.packageManager);
+  //const p = exec("nest new"+ optionString + choices.name + " -p " + choices.packageManager);
+  //readOutput(p);
 };
+
+interface ProjectOptions {
+  dryRun: boolean;
+  skipGit: boolean;
+}
+
+const optionMap: { [key: string]: string } = {
+  dryRun: "-d",
+  skipGit: "-s",
+};
+
+function optionsToArgs(options: ProjectOptions, optionMap: { [key: string]: string }) {
+  let optionString = " ";
+  for (const option in options) {
+      optionString += `${optionMap[option]} `;
+  }
+  return optionString;
+}
