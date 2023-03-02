@@ -1,4 +1,5 @@
 import { IsAlpha, IsEnum } from "class-validator";
+import { OptionsMapping, optionsToArgs } from "./mapper";
 import { validate } from "./validator";
 
 export enum PackageManager {
@@ -19,24 +20,10 @@ interface ProjectOptions {
   skipGit: boolean;
 }
 
-type OptionsMapping<T> = {
-  [key in keyof T]: string;
-};
-
 const toNestOptions: OptionsMapping<ProjectOptions> = {
   dryRun: "-d",
   skipGit: "-s",
 };
-
-const optionsToArgs = <T extends {}>(
-  options: T,
-  optionsMap: OptionsMapping<T>
-) =>
-  Object.keys(options)
-    .map((key: string) =>
-      options[key as keyof T] === true ? optionsMap[key as keyof T] : ""
-    )
-    .join(" ");
 
 export const handleProjectCommand = async (
   projectName: string,
