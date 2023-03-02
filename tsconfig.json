@@ -12,6 +12,9 @@
     "resolveJsonModule": true,
     "importHelpers": true,
     "useUnknownInCatchVariables": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "outDir": "dist",
     "rootDir": "src",
     "types": [
