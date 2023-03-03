@@ -1,0 +1,12 @@
+---
+to: ..\waap-director\src\controller\generic.controller.ts
+---
+import { ApiResponse } from '@nestjs/swagger';
+
+@ApiResponse({ status: 401, description: 'Authentication may be required.' })
+@ApiResponse({
+  status: 403,
+  description: 'The user has no permissions to execute this endpoint',
+})
+@ApiResponse({ status: 500, description: 'Internal server error' })
+export abstract class GenericController {}

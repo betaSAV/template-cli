@@ -1,4 +1,6 @@
+import { exec } from "child_process";
 import { IsAlpha, IsEnum } from "class-validator";
+import { readOutput } from "../utils";
 import { OptionsMapping, optionsToArgs } from "./mapper";
 import { validate } from "./validator";
 
@@ -44,12 +46,7 @@ export const handleProjectCommand = async (
     console.error(errors.join("\n"));
     return;
   }
-  console.log(options);
   const optionString = optionsToArgs(options, toNestOptions);
-  console.log(optionString);
-  console.log(
-    "nest new " + optionString + choices.name + " -p " + choices.packageManager
-  );
-  //const p = exec("nest new"+ optionString + choices.name + " -p " + choices.packageManager);
-  //readOutput(p);
+  const p = exec("nest new"+ optionString + choices.name + " -p " + choices.packageManager);
+  readOutput(p);
 };
