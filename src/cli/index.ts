@@ -8,7 +8,7 @@ export class CLIBuilder {
     this.program = new Command();
     this.initProgram();
     this.addCreateProject();
-    this.addGenerateCommand();
+    this.addResourceCommand();
     return this.program;
   }
 
@@ -33,12 +33,12 @@ export class CLIBuilder {
       .action(handleProjectCommand);
   }
 
-  private static addGenerateCommand() {
+  private static addResourceCommand() {
     this.program
-      .command("generate")
-      .alias("g")
-      .description("Generates a Nest element")
-      .arguments("[nestElement] [elementName]")
+      .command("resource")
+      .alias("res")
+      .description("Generates a Nest resource")
+      .arguments("[resourceName]")
       .option("-d, --dry-run", "Run through without making any changes")
       .action(handleResourceCommand);
   }
