@@ -1,6 +1,3 @@
----
-to: ..\waap-director\src\controller\decorators\api-paginated-list-response.ts
----
 import { ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { applyDecorators, Type } from '@nestjs/common';
 import { PaginatedListDto } from 'src/persistence/interfaces/paginated-list.dto';

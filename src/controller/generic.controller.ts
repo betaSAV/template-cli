@@ -1,6 +1,3 @@
----
-to: <%= cwd %>/src/controller/generic.controller.ts
----
 import { ApiResponse } from '@nestjs/swagger';
 
 @ApiResponse({ status: 401, description: 'Authentication may be required.' })

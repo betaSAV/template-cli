@@ -1,2 +1,4 @@
 node_modules
 dist
+hygen-create.json
+_templates/persistence/new/hygen-create.json.ejs.t

@@ -8,6 +8,6 @@ export const newProjectQuestions = [
     type: "list",
     name: "packageManager",
     message: "What package manager do you want to use?",
-    choices: ["npm", "yarn", "pnpm"],
+    choices: ["npm", "yarn"],
   },
 ];
