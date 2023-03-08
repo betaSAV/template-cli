@@ -58,7 +58,7 @@ export const handleProjectCommand = async (
   const outputNest = exec(
     "nest new" + optionString + choices.name + " -p " + choices.packageManager
   );
-  readOutput(outputNest);
+  await readOutput(outputNest);
   if (choices.packageManager === PackageManager.YARN) {
     const outputPackage = exec(`yarn add ${projectDependencies.join(" ")}`);
     readOutput(outputPackage);
@@ -66,8 +66,8 @@ export const handleProjectCommand = async (
     const outputPackage = exec(
       `npm install --save ${projectDependencies.join(" ")}`
     );
-    readOutput(outputPackage);
+    await readOutput(outputPackage);
   }
   const hygen = exec("hygen controller new; hygen persistence new; hygen app new");
-  readOutput(hygen);
+  await readOutput(hygen);
 };

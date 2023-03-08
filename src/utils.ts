@@ -16,16 +16,24 @@ export function readInput(p: ChildProcess) {
     });
   }
   
-  export function readOutput(p: ChildProcess) {
-    p?.stdout?.on("data", (data: any) => {
-      console.log(`${data}`);
-    });
+  export function readOutput(p: ChildProcess): Promise<void> {
+    return new Promise((resolve, reject) => {
+      p?.stdout?.on("data", (data: any) => {
+        console.log(`${data}`);
+      });
   
-    p?.stderr?.on("data", (data: any) => {
-      console.error(`stderr: ${data}`);
-    });
+      p?.stderr?.on("data", (data: any) => {
+        console.error(`stderr: ${data}`);
+      });
   
-    p.on("close", (code: any) => {
-      console.log(`child process exited with code ${code}`);
+      p.on("close", (code: any) => {
+        console.log(`child process exited with code ${code}`);
+        resolve();
+      });
+  
+      p.on("error", (error: Error) => {
+        console.error(`child process error: ${error}`);
+        reject(error);
+      });
     });
   }

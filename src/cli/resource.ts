@@ -12,6 +12,8 @@ export const handleResourceCommand = async (elementName: string) => {
     const answers = await inquirer.prompt<ElmentAnswers>(newResourceQuestions);
     elementName = answers.elementName;
   }
-  const p = exec("nest generate -d resource " + elementName);
-  readOutput(p);
+  const outputNest = exec("nest generate resource " + elementName);
+  await readOutput(outputNest);
+  const hygen = exec("hygen resource new --name " + elementName);
+  await readOutput(hygen);
 };
