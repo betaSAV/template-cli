@@ -4,4 +4,4 @@ force: true
 ---
 import { BaseEntity } from 'src/persistence/base.entity';
 
-export class Test extends BaseEntity {}
+export class <%=Name%> extends BaseEntity {}
