@@ -6,6 +6,6 @@ skip_if: "Service: "
 ---
 
   constructor(
-    private readonly testPersistenceService: TestPersistenceService
+    private readonly <%=name%>PersistenceService: <%=Name%>PersistenceService
   ) {}
   
