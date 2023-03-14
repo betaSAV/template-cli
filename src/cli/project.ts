@@ -68,7 +68,6 @@ export const handleProjectCommand = async (
     );
     await readOutput(outputPackage);
   }
-  const tempProjectName = "test";
-  const hygen = exec(`hygen controller new --project ${tempProjectName} && hygen persistence new --project ${tempProjectName} && hygen app new --project ${tempProjectName}`);
+  const hygen = exec(`hygen controller new --project ${choices.name} && hygen persistence new --project ${choices.name} && hygen app new --project ${choices.name}`);
   await readOutput(hygen);
 };
