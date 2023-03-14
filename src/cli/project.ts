@@ -1,8 +1,8 @@
+import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { exec } from "child_process";
-import { IsAlpha, IsEnum } from "class-validator";
-import { readOutput } from "../utils";
 import { OptionsMapping, optionsToArgs } from "./mapper";
 import { validate } from "./validator";
+import { readOutput } from "../io";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -15,11 +15,18 @@ export class ProjectChoices {
 
   @IsEnum(PackageManager)
   packageManager: PackageManager;
+
+  options: ProjectOptions;
 }
 
-interface ProjectOptions {
-  dryRun: boolean;
-  skipGit: boolean;
+export class ProjectOptions {
+  @IsOptional()
+  @IsBoolean()
+  dryRun?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  skipGit?: boolean;
 }
 
 const toNestOptions: OptionsMapping<ProjectOptions> = {
@@ -35,6 +42,7 @@ export const handleProjectCommand = async (
   const choices: ProjectChoices = {
     name: projectName,
     packageManager,
+    options,
   };
   // if (!(choices.name && choices.packageManager)) {
   //   const answers = await inquirer.prompt<ProjectChoices>(newProjectQuestions);
@@ -46,16 +54,29 @@ export const handleProjectCommand = async (
     console.error(errors.join("\n"));
     return;
   }
-  const optionString = optionsToArgs(options, toNestOptions);
-  const outputNest = exec(
-    `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
+  const optionString = optionsToArgs(choices.options, toNestOptions);
+
+  const outputNest = exec(`nest new ${optionString} ${choices.name} -p ${choices.packageManager}`);
+  try {
+    await readOutput(outputNest);
+  } catch (err: any) {
+    console.error(`Something was wrong ${err}`);
+    return;
+  }
+  
+  if (choices.options.dryRun) {
+    return;
+  }
+
+  const outputPackage = exec( `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`);
+  await readOutput(outputPackage).catch((reason) => {
+    console.error(`Something was wrong ${reason}`);
+  });
+
+  const hygen = exec(
+    `hygen controller new --project ${choices.name} && hygen persistence new --project ${choices.name} && hygen app new --project ${choices.name}`
   );
-  await readOutput(outputNest);
-
-  const outputPackage = exec(`hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`);
-  readOutput(outputPackage);
-  await readOutput(outputPackage);
-
-  const hygen = exec(`hygen controller new --project ${choices.name} && hygen persistence new --project ${choices.name} && hygen app new --project ${choices.name}`);
-  await readOutput(hygen);
+  await readOutput(hygen).catch((reason) => {
+    console.error(`Something was wrong ${reason}`);
+  });
 };
