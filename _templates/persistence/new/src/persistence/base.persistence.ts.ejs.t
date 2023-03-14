@@ -1,5 +1,6 @@
 ---
 to: ../waap-director/src/persistence/base.persistence.ts
+force: true
 ---
 import {
   DeleteResult,

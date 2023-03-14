@@ -1,6 +1,6 @@
 import { exec } from "child_process";
-import { IsAlpha, IsEnum } from "class-validator";
-import { readOutput } from "../utils";
+import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
+import { readOutput } from "../io";
 import { OptionsMapping, optionsToArgs } from "./mapper";
 import { validate } from "./validator";
 
@@ -15,11 +15,18 @@ export class ProjectChoices {
 
   @IsEnum(PackageManager)
   packageManager: PackageManager;
+
+  options: ProjectOptions;
 }
 
-interface ProjectOptions {
-  dryRun: boolean;
-  skipGit: boolean;
+export class ProjectOptions {
+  @IsOptional()
+  @IsBoolean()
+  dryRun?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  skipGit?: boolean;
 }
 
 const toNestOptions: OptionsMapping<ProjectOptions> = {
@@ -38,11 +45,12 @@ const projectDependencies = [
 export const handleProjectCommand = async (
   projectName: string,
   packageManager: PackageManager,
-  options: { dryRun: boolean; skipGit: boolean }
+  options: ProjectOptions
 ) => {
   const choices: ProjectChoices = {
     name: projectName,
     packageManager,
+    options,
   };
   // if (!(choices.name && choices.packageManager)) {
   //   const answers = await inquirer.prompt<ProjectChoices>(newProjectQuestions);
@@ -54,20 +62,34 @@ export const handleProjectCommand = async (
     console.error(errors.join("\n"));
     return;
   }
-  const optionString = optionsToArgs(options, toNestOptions);
+  const optionString = optionsToArgs(choices.options, toNestOptions);
   const outputNest = exec(
-    "nest new" + optionString + choices.name + " -p " + choices.packageManager
+    `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
   );
-  await readOutput(outputNest);
+  try {
+    await readOutput(outputNest);
+  } catch (err: any) {
+    console.error(`Something was wrong ${err}`);
+    return;
+  }
+
   if (choices.packageManager === PackageManager.YARN) {
     const outputPackage = exec(`yarn add ${projectDependencies.join(" ")}`);
-    readOutput(outputPackage);
+    await readOutput(outputPackage).catch((reason) => {
+      console.error(`Something was wrong ${reason}`);
+    });
   } else {
     const outputPackage = exec(
       `npm install --save ${projectDependencies.join(" ")}`
     );
-    await readOutput(outputPackage);
+    await readOutput(outputPackage).catch((reason) => {
+      console.error(`Something was wrong ${reason}`);
+    });
   }
-  const hygen = exec("hygen controller new; hygen persistence new; hygen app new");
-  await readOutput(hygen);
+  const hygen = exec(
+    "hygen controller new; hygen persistence new; hygen app new"
+  );
+  await readOutput(hygen).catch((reason) => {
+    console.error(`Something was wrong ${reason}`);
+  });
 };

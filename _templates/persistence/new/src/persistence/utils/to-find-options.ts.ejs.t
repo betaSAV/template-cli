@@ -1,5 +1,6 @@
 ---
 to: ../waap-director/src/persistence/utils/to-find-options.ts
+force: true
 ---
 import {
   Between,

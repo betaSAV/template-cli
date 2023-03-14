@@ -1,5 +1,6 @@
 ---
 to: <%= cwd %>/src/controller/generic.controller.ts
+force: true
 ---
 import { ApiResponse } from '@nestjs/swagger';
 
