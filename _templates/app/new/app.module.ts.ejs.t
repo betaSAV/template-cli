@@ -1,5 +1,6 @@
 ---
-to: <%= cwd %>/src/app.module.ts
+to: <%= cwd %>/<%=project%>/src/app.module.ts
+force: true
 ---
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

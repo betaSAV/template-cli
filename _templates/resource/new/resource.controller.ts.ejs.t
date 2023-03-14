@@ -1,5 +1,5 @@
 ---
-to: <%= cwd %>/src/<%=name%>/<%=name%>.controller.ts
+to: <%= cwd %>/<%=project%>/src/<%=name%>/<%=name%>.controller.ts
 force: true
 ---
 import { GenericController } from 'src/controller/generic.controller';

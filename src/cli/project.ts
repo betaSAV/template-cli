@@ -56,7 +56,7 @@ export const handleProjectCommand = async (
   }
   const optionString = optionsToArgs(options, toNestOptions);
   const outputNest = exec(
-    "nest new" + optionString + choices.name + " -p " + choices.packageManager
+    `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
   );
   await readOutput(outputNest);
   if (choices.packageManager === PackageManager.YARN) {
@@ -68,6 +68,7 @@ export const handleProjectCommand = async (
     );
     await readOutput(outputPackage);
   }
-  const hygen = exec("hygen controller new; hygen persistence new; hygen app new");
+  const tempProjectName = "test";
+  const hygen = exec(`hygen controller new --project ${tempProjectName} && hygen persistence new --project ${tempProjectName} && hygen app new --project ${tempProjectName}`);
   await readOutput(hygen);
 };

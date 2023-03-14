@@ -1,5 +1,5 @@
 ---
-to: <%= cwd %>/src/<%=name%>/entities/<%=name%>.entity.ts
+to: <%= cwd %>/<%=project%>/src/<%=name%>/entities/<%=name%>.entity.ts
 force: true
 ---
 import { BaseEntity } from 'src/persistence/base.entity';

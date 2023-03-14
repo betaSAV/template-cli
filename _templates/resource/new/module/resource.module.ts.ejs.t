@@ -1,5 +1,5 @@
 ---
-to: <%= cwd %>/src/<%=name%>/<%=name%>.module.ts
+to: <%= cwd %>/<%=project%>/src/<%=name%>/<%=name%>.module.ts
 force: true
 ---
 import { Module } from '@nestjs/common';

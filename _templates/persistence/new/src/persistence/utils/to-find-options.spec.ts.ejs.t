@@ -1,5 +1,6 @@
 ---
-to: ../waap-director/src/persistence/utils/to-find-options.spec.ts
+to: <%= cwd %>/<%=project%>/src/persistence/utils/to-find-options.spec.ts
+force: true
 ---
 import {
   Between,
