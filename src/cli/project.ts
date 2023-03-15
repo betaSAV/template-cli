@@ -52,7 +52,7 @@ export const handleProjectCommand = async (
   );
   await readOutput(outputNest);
 
-  const outputPackage = exec(`hygen goto new --project ${choices.name} --packageManager ${choices.packageManager === PackageManager.YARN ? 'yarn' : 'npm'}`);
+  const outputPackage = exec(`hygen dependencies new --project ${choices.name}`);
   readOutput(outputPackage);
   await readOutput(outputPackage);
 
