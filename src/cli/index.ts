@@ -40,6 +40,7 @@ export class CLIBuilder {
       .description("Generates a Nest resource")
       .arguments("[resourceName]")
       .option("-d, --dry-run", "Run through without making any changes")
+      .option("-p, --project <project>", "Project to generate resource in")
       .action(handleResourceCommand);
   }
 }

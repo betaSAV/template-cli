@@ -38,7 +38,7 @@ const projectDependencies = [
 export const handleProjectCommand = async (
   projectName: string,
   packageManager: PackageManager,
-  options: { dryRun: boolean; skipGit: boolean }
+  options: { dryRun: boolean; skipGit: boolean; }
 ) => {
   const choices: ProjectChoices = {
     name: projectName,
