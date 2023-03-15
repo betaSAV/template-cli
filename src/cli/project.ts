@@ -27,14 +27,6 @@ const toNestOptions: OptionsMapping<ProjectOptions> = {
   skipGit: "-s",
 };
 
-const projectDependencies = [
-  "@nestjs/swagger",
-  "@nestjs/typeorm",
-  "typeorm",
-  "class-transformer",
-  "class-validator",
-];
-
 export const handleProjectCommand = async (
   projectName: string,
   packageManager: PackageManager,
@@ -59,15 +51,11 @@ export const handleProjectCommand = async (
     `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
   );
   await readOutput(outputNest);
-  if (choices.packageManager === PackageManager.YARN) {
-    const outputPackage = exec(`yarn add ${projectDependencies.join(" ")}`);
-    readOutput(outputPackage);
-  } else {
-    const outputPackage = exec(
-      `npm install --save ${projectDependencies.join(" ")}`
-    );
-    await readOutput(outputPackage);
-  }
+
+  const outputPackage = exec(`hygen goto new --project ${choices.name} --packageManager ${choices.packageManager === PackageManager.YARN ? 'yarn' : 'npm'}`);
+  readOutput(outputPackage);
+  await readOutput(outputPackage);
+
   const hygen = exec(`hygen controller new --project ${choices.name} && hygen persistence new --project ${choices.name} && hygen app new --project ${choices.name}`);
   await readOutput(hygen);
 };
