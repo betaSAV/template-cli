@@ -1,6 +1,6 @@
 ---
 to: <%= cwd %>/<%=project%>/src/persistence/enum/sort-direction.enum.ts
-force: true
+unless_exists: true
 ---
 export enum SortDirection {
   ASC = 'asc',

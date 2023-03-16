@@ -1,6 +1,6 @@
 ---
 to: <%= cwd %>/<%=project%>/src/persistence/base.entity.ts
-force: true
+unless_exists: true
 ---
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';

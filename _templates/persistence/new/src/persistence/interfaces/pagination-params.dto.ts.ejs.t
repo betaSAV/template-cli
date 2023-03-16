@@ -1,6 +1,6 @@
 ---
 to: <%= cwd %>/<%=project%>/src/persistence/interfaces/pagination-params.dto.ts
-force: true
+unless_exists: true
 ---
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';

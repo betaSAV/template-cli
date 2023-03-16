@@ -1,4 +1,4 @@
 ---
 sh: |
-      sed -i "s/Service\]/Service, <%=Name%>PersistenceService]/" <%= cwd %>/<%=project%>/src/<%=name%>/<%=name%>.module.ts
+      sed -i "s/<%=Name%>Service\]/<%=Name%>Service, <%=Name%>PersistenceService]/" <%= cwd %>/<%=project%>/src/<%=name%>/<%=name%>.module.ts
 ---

@@ -1,6 +1,6 @@
 ---
 to: <%= cwd %>/<%=project%>/src/persistence/base.persistence.ts
-force: true
+unless_exists: true
 ---
 import {
   DeleteResult,

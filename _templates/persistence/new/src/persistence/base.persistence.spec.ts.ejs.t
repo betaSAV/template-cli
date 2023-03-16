@@ -1,6 +1,6 @@
 ---
 to: <%= cwd %>/<%=project%>/src/persistence/base.persistence.spec.ts
-force: true
+unless_exists: true
 ---
 import { Injectable } from '@nestjs/common';
 import { Test } from '@nestjs/testing';

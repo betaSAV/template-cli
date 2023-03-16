@@ -1,6 +1,6 @@
 ---
 to: <%= cwd %>/<%=project%>/src/persistence/interfaces/paginated-list.dto.ts
-force: true
+unless_exists: true
 ---
 import { ApiProperty } from '@nestjs/swagger';
 

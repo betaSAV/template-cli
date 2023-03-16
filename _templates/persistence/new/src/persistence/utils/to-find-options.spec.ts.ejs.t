@@ -1,6 +1,6 @@
 ---
 to: <%= cwd %>/<%=project%>/src/persistence/utils/to-find-options.spec.ts
-force: true
+unless_exists: true
 ---
 import {
   Between,

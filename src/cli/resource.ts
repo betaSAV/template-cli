@@ -7,6 +7,7 @@ import { newResourceQuestions } from "./questions/resource";
 
 export interface ElementAnswers {
   elementName: string;
+  project: string;
 }
 
 interface ProjectOptions {
@@ -26,6 +27,7 @@ export const handleResourceCommand = async (
   if (!elementName) {
     const answers = await inquirer.prompt<ElementAnswers>(newResourceQuestions);
     elementName = answers.elementName;
+    options.project = answers.project;
   }
   const optionString = optionsToArgs(options, toNestOptions);
 
