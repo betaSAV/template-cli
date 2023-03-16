@@ -6,7 +6,7 @@ import { OptionsMapping, optionsToArgs } from "./mapper";
 import { newResourceQuestions } from "./questions/resource";
 
 export interface ElementAnswers {
-  elementName: string;
+  resourceName: string;
   project: string;
 }
 
@@ -24,12 +24,12 @@ export const handleResourceCommand = async (
   elementName: string,
   options: { dryRun: boolean; project: string; }
 ) => {
+  const optionString = optionsToArgs(options, toNestOptions);
   if (!elementName) {
     const answers = await inquirer.prompt<ElementAnswers>(newResourceQuestions);
-    elementName = answers.elementName;
+    elementName = answers.resourceName;
     options.project = answers.project;
   }
-  const optionString = optionsToArgs(options, toNestOptions);
 
   if (!fs.existsSync(options.project)) {
     console.log(`Project directory '${options.project}' does not exist.`);
