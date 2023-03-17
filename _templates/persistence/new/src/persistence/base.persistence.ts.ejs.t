@@ -4,7 +4,6 @@ unless_exists: true
 ---
 import {
   DeleteResult,
-  FindConditions,
   FindManyOptions,
   FindOneOptions,
   RemoveOptions,
@@ -15,7 +14,7 @@ import { BaseEntity } from './base.entity';
 export abstract class BasePersistence<T extends BaseEntity> {
   protected repository: Repository<T>;
 
-  find(conditions?: FindConditions<T>): Promise<T[]> {
+  find(conditions?: FindManyOptions<T>): Promise<T[]> {
     return this.repository.find(conditions);
   }
 
@@ -27,20 +26,16 @@ export abstract class BasePersistence<T extends BaseEntity> {
     return this.repository.find(options);
   }
 
-  findPaginated(params: PaginationParamsDto, options?: FindManyOptions<T>): Promise<PaginatedListDto<T>> {
-    return this.repository.find(options);
-  }
-
   findAndCount(options?: FindManyOptions<T>): Promise<[T[], number]> {
     return this.repository.findAndCount(options);
   }
 
   findById(id: string, options?: FindOneOptions<T>): Promise<T> {
-    return this.repository.findOne(id, options);
+    return this.repository.findOne(options);
   }
 
-  findByIds(ids: string[], options?: FindManyOptions<T>): Promise<T[]> {
-    return this.repository.findByIds(ids, options);
+  findByIds(ids: string[]): Promise<T[]> {
+    return this.repository.findByIds(ids);
   }
 
   deleteEntity(entity: T, options?: RemoveOptions): Promise<T> {
@@ -66,3 +61,4 @@ export abstract class BasePersistence<T extends BaseEntity> {
     return this.repository.count(options);
   }
 }
+

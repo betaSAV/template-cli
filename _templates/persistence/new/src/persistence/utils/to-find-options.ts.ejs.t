@@ -4,7 +4,7 @@ unless_exists: true
 ---
 import {
   Between,
-  FindConditions,
+  FindOptionsWhere,
   FindManyOptions,
   FindOperator,
   LessThanOrEqual,
@@ -38,7 +38,7 @@ export const toRange = <T>(
   column: string,
   from?: T,
   to?: T,
-): { string?: FindOperator<FindConditions<T>> } => {
+): { string?: FindOperator<FindOptionsWhere<T>> } => {
   const operator = {};
   if (!!from && !!to) {
     operator[column] = Between(from, to);
@@ -50,3 +50,4 @@ export const toRange = <T>(
   }
   return operator;
 };
+
