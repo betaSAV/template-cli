@@ -22,7 +22,7 @@ const toNestOptions: OptionsMapping<ProjectOptions> = {
 
 export const handleResourceCommand = async (
   elementName: string,
-  options: { dryRun: boolean; project: string; }
+  options: ProjectOptions
 ) => {
   const optionString = optionsToArgs(options, toNestOptions);
   if (!elementName) {

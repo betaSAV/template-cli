@@ -30,7 +30,7 @@ const toNestOptions: OptionsMapping<ProjectOptions> = {
 export const handleProjectCommand = async (
   projectName: string,
   packageManager: PackageManager,
-  options: { dryRun: boolean; skipGit: boolean; }
+  options: ProjectOptions
 ) => {
   const choices: ProjectChoices = {
     name: projectName,
