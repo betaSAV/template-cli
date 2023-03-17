@@ -1,6 +1,7 @@
 ---
-to: <%= cwd %>/src/<%=name%>/entities/<%=name%>.entity.ts
+to: <%= cwd %>/<%=project%>/src/<%=name%>/entities/<%=name%>.entity.ts
 force: true
+skip_if: "BaseEntity"
 ---
 import { BaseEntity } from 'src/persistence/base.entity';
 

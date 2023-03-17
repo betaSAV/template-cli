@@ -1,5 +1,6 @@
 ---
-to: ../waap-director/src/persistence/base.persistence.spec.ts
+to: <%= cwd %>/<%=project%>/src/persistence/base.persistence.spec.ts
+unless_exists: true
 ---
 import { Injectable } from '@nestjs/common';
 import { Test } from '@nestjs/testing';

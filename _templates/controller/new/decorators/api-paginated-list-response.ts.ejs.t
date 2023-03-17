@@ -1,5 +1,6 @@
 ---
-to: <%= cwd %>/src/controller/decorators/api-paginated-list-response.ts
+to: <%= cwd %>/<%=project%>/src/controller/decorators/api-paginated-list-response.ts
+unless_exists: true
 ---
 import { ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { applyDecorators, Type } from '@nestjs/common';

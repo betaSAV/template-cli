@@ -1,6 +1,6 @@
 ---
 inject: true
-to: <%= cwd %>/src/<%=name%>/<%=name%>.service.ts
+to: <%= cwd %>/<%=project%>/src/<%=name%>/<%=name%>.service.ts
 after: "Service {"
 skip_if: "Service: "
 ---

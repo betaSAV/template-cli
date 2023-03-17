@@ -27,18 +27,10 @@ const toNestOptions: OptionsMapping<ProjectOptions> = {
   skipGit: "-s",
 };
 
-const projectDependencies = [
-  "@nestjs/swagger",
-  "@nestjs/typeorm",
-  "typeorm",
-  "class-transformer",
-  "class-validator",
-];
-
 export const handleProjectCommand = async (
   projectName: string,
   packageManager: PackageManager,
-  options: { dryRun: boolean; skipGit: boolean }
+  options: ProjectOptions
 ) => {
   const choices: ProjectChoices = {
     name: projectName,
@@ -56,18 +48,14 @@ export const handleProjectCommand = async (
   }
   const optionString = optionsToArgs(options, toNestOptions);
   const outputNest = exec(
-    "nest new" + optionString + choices.name + " -p " + choices.packageManager
+    `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
   );
   await readOutput(outputNest);
-  if (choices.packageManager === PackageManager.YARN) {
-    const outputPackage = exec(`yarn add ${projectDependencies.join(" ")}`);
-    readOutput(outputPackage);
-  } else {
-    const outputPackage = exec(
-      `npm install --save ${projectDependencies.join(" ")}`
-    );
-    await readOutput(outputPackage);
-  }
-  const hygen = exec("hygen controller new; hygen persistence new; hygen app new");
+
+  const outputPackage = exec(`hygen dependencies new --project ${choices.name}`);
+  readOutput(outputPackage);
+  await readOutput(outputPackage);
+
+  const hygen = exec(`hygen controller new --project ${choices.name} && hygen persistence new --project ${choices.name} && hygen app new --project ${choices.name}`);
   await readOutput(hygen);
 };

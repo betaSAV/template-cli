@@ -1,5 +1,6 @@
 ---
-to: ../waap-director/src/persistence/base.persistence.ts
+to: <%= cwd %>/<%=project%>/src/persistence/base.persistence.ts
+unless_exists: true
 ---
 import {
   DeleteResult,

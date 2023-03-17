@@ -1,5 +1,6 @@
 ---
-to: <%= cwd %>/src/<%=name%>/<%=name%>.persistence.ts
+to: <%= cwd %>/<%=project%>/src/<%=name%>/<%=name%>.persistence.ts
+unless_exists: true
 ---
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
