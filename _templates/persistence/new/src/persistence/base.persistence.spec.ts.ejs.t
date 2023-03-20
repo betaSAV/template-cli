@@ -115,11 +115,12 @@ describe('BasePersistence', () => {
   });
 
   describe('findByIds', () => {
-    it('should call repository findByIds with correct id & options', async () => {
-      let ids = ['id1', 'id2'];
-      let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
+    it('should call repository find with correct options', async () => {
+      const ids = ['id1', 'id2'];
       await dummyService.findByIds(ids);
-      expect(repositoryMock.findByIds).toHaveBeenCalledWith(ids);
+      expect(repositoryMock.find).toHaveBeenCalledWith({
+        where: { id: In(ids) },
+      });
     });
   });
 

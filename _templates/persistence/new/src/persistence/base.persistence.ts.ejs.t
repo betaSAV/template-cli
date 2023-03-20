@@ -44,7 +44,7 @@ export abstract class BasePersistence<T extends BaseEntity> {
   }
 
   findByIds(ids: string[]): Promise<T[]> {
-    return this.repository.findByIds(ids);
+    return this.repository.find({ where: { id: In(ids) } as FindOptionsWhere<T> });
   }
 
   deleteEntity(entity: T, options?: RemoveOptions): Promise<T> {
