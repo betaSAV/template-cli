@@ -6,10 +6,14 @@ import {
   DeleteResult,
   FindManyOptions,
   FindOneOptions,
+  FindOptionsWhere,
+  In,
   RemoveOptions,
   Repository,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { PaginatedListDto } from './interfaces/paginated-list.dto';
+import { PaginationParamsDto } from './interfaces/pagination-params.dto';
 
 export abstract class BasePersistence<T extends BaseEntity> {
   protected repository: Repository<T>;

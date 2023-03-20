@@ -9,6 +9,7 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
+  In,
   RemoveOptions,
   Repository,
 } from 'typeorm';
