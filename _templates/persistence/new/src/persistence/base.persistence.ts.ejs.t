@@ -4,18 +4,21 @@ unless_exists: true
 ---
 import {
   DeleteResult,
-  FindConditions,
   FindManyOptions,
   FindOneOptions,
+  FindOptionsWhere,
+  In,
   RemoveOptions,
   Repository,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { PaginatedListDto } from './interfaces/paginated-list.dto';
+import { PaginationParamsDto } from './interfaces/pagination-params.dto';
 
 export abstract class BasePersistence<T extends BaseEntity> {
   protected repository: Repository<T>;
 
-  find(conditions?: FindConditions<T>): Promise<T[]> {
+  find(conditions?: FindManyOptions<T>): Promise<T[]> {
     return this.repository.find(conditions);
   }
 
@@ -27,8 +30,13 @@ export abstract class BasePersistence<T extends BaseEntity> {
     return this.repository.find(options);
   }
 
-  findPaginated(params: PaginationParamsDto, options?: FindManyOptions<T>): Promise<PaginatedListDto<T>> {
-    return this.repository.find(options);
+  async findPaginated(params: PaginationParamsDto, options?: FindManyOptions<T>): Promise<PaginatedListDto<T>> {
+    const { page, limit } = params;
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const query = { ...options, skip, take };
+    const [list, total] = await this.repository.findAndCount(query);
+    return { list, total };
   }
 
   findAndCount(options?: FindManyOptions<T>): Promise<[T[], number]> {
@@ -36,11 +44,11 @@ export abstract class BasePersistence<T extends BaseEntity> {
   }
 
   findById(id: string, options?: FindOneOptions<T>): Promise<T> {
-    return this.repository.findOne(id, options);
+    return this.repository.findOne(options);
   }
 
-  findByIds(ids: string[], options?: FindManyOptions<T>): Promise<T[]> {
-    return this.repository.findByIds(ids, options);
+  findByIds(ids: string[]): Promise<T[]> {
+    return this.repository.find({ where: { id: In(ids) } as FindOptionsWhere<T> });
   }
 
   deleteEntity(entity: T, options?: RemoveOptions): Promise<T> {
@@ -66,3 +74,4 @@ export abstract class BasePersistence<T extends BaseEntity> {
     return this.repository.count(options);
   }
 }
+

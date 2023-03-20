@@ -9,6 +9,7 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
+  In,
   RemoveOptions,
   Repository,
 } from 'typeorm';
@@ -61,7 +62,7 @@ describe('BasePersistence', () => {
   });
 
   describe('find', () => {
-    it('should call repsository find with correct options', async () => {
+    it('should call repository find with correct options', async () => {
       let options = { where: { name: 'test' } } as FindConditions<BaseEntity>;
       await dummyService.find(options);
       expect(repositoryMock.find).toHaveBeenCalledWith(options);
@@ -69,7 +70,7 @@ describe('BasePersistence', () => {
   });
 
   describe('findOne', () => {
-    it('should call repsository findOne with correct options', async () => {
+    it('should call repository findOne with correct options', async () => {
       let options = { where: { name: 'test' } } as FindOneOptions<BaseEntity>;
       await dummyService.findOne(options);
       expect(repositoryMock.findOne).toHaveBeenCalledWith(options);
@@ -77,15 +78,28 @@ describe('BasePersistence', () => {
   });
 
   describe('findAll', () => {
-    it('should call repsository find with correct options', async () => {
+    it('should call repository find with correct options', async () => {
       let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
       await dummyService.findAll(options);
       expect(repositoryMock.find).toHaveBeenCalledWith(options);
     });
   });
 
+  describe('findPaginated', () => {
+    it('should call repository findAndCount with correct options', async () => {
+      const paginationParams = { page: 1, limit: 10 };
+      const options = { where: { name: 'test' } };
+      await dummyService.findPaginated(paginationParams);
+      expect(repositoryMock.findAndCount).toHaveBeenCalledWith({
+        ...options,
+        skip: 0,
+        take: 10,
+      });
+    });
+  });
+
   describe('findAndCount', () => {
-    it('should call repsository findAndCount with correct options', async () => {
+    it('should call repository findAndCount with correct options', async () => {
       let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
       await dummyService.findAndCount(options);
       expect(repositoryMock.findAndCount).toHaveBeenCalledWith(options);
@@ -93,7 +107,7 @@ describe('BasePersistence', () => {
   });
 
   describe('findById', () => {
-    it('should call repsository findOne with correct id & options', async () => {
+    it('should call repository findOne with correct id & options', async () => {
       let id = 'id';
       let options = { where: { name: 'test' } } as FindOneOptions<BaseEntity>;
       await dummyService.findById(id, options);
@@ -102,16 +116,17 @@ describe('BasePersistence', () => {
   });
 
   describe('findByIds', () => {
-    it('should call repsository findByIds with correct id & options', async () => {
-      let ids = ['id1', 'id2'];
-      let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
-      await dummyService.findByIds(ids, options);
-      expect(repositoryMock.findByIds).toHaveBeenCalledWith(ids, options);
+    it('should call repository find with correct options', async () => {
+      const ids = ['id1', 'id2'];
+      await dummyService.findByIds(ids);
+      expect(repositoryMock.find).toHaveBeenCalledWith({
+        where: { id: In(ids) },
+      });
     });
   });
 
   describe('deleteEntity', () => {
-    it('should call repsository deleteEntity with correct id & options', async () => {
+    it('should call repository deleteEntity with correct id & options', async () => {
       let entity = { id: 'id' } as BaseEntity;
       let options = { where: { name: 'test' } } as RemoveOptions;
       await dummyService.deleteEntity(entity, options);
@@ -120,7 +135,7 @@ describe('BasePersistence', () => {
   });
 
   describe('deleteById', () => {
-    it('should call repsository delete with correct id & options', async () => {
+    it('should call repository delete with correct id & options', async () => {
       let id = 'id';
       await dummyService.deleteById(id);
       expect(repositoryMock.delete).toHaveBeenCalledWith(id);
@@ -157,7 +172,7 @@ describe('BasePersistence', () => {
   });
 
   describe('count', () => {
-    it('should call repsository count with correct options', async () => {
+    it('should call repository count with correct options', async () => {
       let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
       await dummyService.count(options);
       expect(repositoryMock.count).toHaveBeenCalledWith(options);

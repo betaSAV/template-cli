@@ -52,7 +52,7 @@ export const handleProjectCommand = async (
   );
   await readOutput(outputNest);
 
-  const outputPackage = exec(`hygen dependencies new --project ${choices.name}`);
+  const outputPackage = exec(`hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`);
   readOutput(outputPackage);
   await readOutput(outputPackage);
 
