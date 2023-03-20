@@ -26,6 +26,15 @@ export abstract class BasePersistence<T extends BaseEntity> {
     return this.repository.find(options);
   }
 
+  async findPaginated(params: PaginationParamsDto, options?: FindManyOptions<T>): Promise<PaginatedListDto<T>> {
+    const { page, limit } = params;
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const query = { ...options, skip, take };
+    const [list, total] = await this.repository.findAndCount(query);
+    return { list, total };
+  }
+
   findAndCount(options?: FindManyOptions<T>): Promise<[T[], number]> {
     return this.repository.findAndCount(options);
   }
