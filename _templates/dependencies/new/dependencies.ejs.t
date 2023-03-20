@@ -3,6 +3,7 @@ inject: true
 to: <%= cwd %>/<%=project%>/package.json
 after: dependencies
 skip_if: "@nestjs/swagger"
+sh: cd <%= cwd %>/<%=project%> && <%= packageManager %> install
 ---
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/typeorm": "^9.0.1",
