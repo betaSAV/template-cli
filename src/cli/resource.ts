@@ -1,9 +1,9 @@
 import { exec } from "child_process";
-import fs from "fs";
 import inquirer from "inquirer";
-import { readOutput } from "../utils";
-import { OptionsMapping, optionsToArgs } from "./mapper";
+import fs from "fs";
 import { newResourceQuestions } from "./questions/resource";
+import { OptionsMapping, optionsToArgs } from "./mapper";
+import { readOutput } from "../io";
 
 export interface ElementAnswers {
   resourceName: string;
@@ -29,6 +29,10 @@ export const handleResourceCommand = async (
     const answers = await inquirer.prompt<ElementAnswers>(newResourceQuestions);
     elementName = answers.resourceName;
     options.project = answers.project;
+  }
+
+  if (options.dryRun) {
+    return;
   }
 
   if (!fs.existsSync(options.project)) {
