@@ -24,7 +24,11 @@ export class CLIBuilder {
       .command("new")
       .alias("n")
       .description("Makes a default new project")
-      .arguments("[projectName] [packageManager]")
+      .argument("<projectName>", "The name of the project")
+      .argument(
+        "<packageManager>",
+        "The package manager to be used in the project"
+      )
       .option("-d, --dry-run", "Run through without making any changes")
       .option(
         "-g, --skip-git",
@@ -38,7 +42,7 @@ export class CLIBuilder {
       .command("resource")
       .alias("res")
       .description("Generates a Nest resource")
-      .arguments("[resourceName]")
+      .arguments("<resourceName>")
       .option("-d, --dry-run", "Run through without making any changes")
       .option("-p, --project <project>", "Project to generate resource in")
       .action(handleResourceCommand);

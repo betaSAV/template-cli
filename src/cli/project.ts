@@ -54,21 +54,26 @@ export const handleProjectCommand = async (
     console.error(errors.join("\n"));
     return;
   }
+
   const optionString = optionsToArgs(choices.options, toNestOptions);
 
-  const outputNest = exec(`nest new ${optionString} ${choices.name} -p ${choices.packageManager}`);
+  const outputNest = exec(
+    `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
+  );
   try {
     await readOutput(outputNest);
   } catch (err: any) {
     console.error(`Something was wrong ${err}`);
     return;
   }
-  
+
   if (choices.options.dryRun) {
     return;
   }
 
-  const outputPackage = exec( `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`);
+  const outputPackage = exec(
+    `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
+  );
   await readOutput(outputPackage).catch((reason) => {
     console.error(`Something was wrong ${reason}`);
   });
