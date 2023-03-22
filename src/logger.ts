@@ -1,12 +1,12 @@
 import * as winston from 'winston';
 
 export const logger = winston.createLogger({
-    format: winston.format.colorize(),
+    format: winston.format.cli(),
 
     transports: [
         new winston.transports.Console({
             format: winston.format.combine(
-                      winston.format.colorize({ all: true }),
+                      winston.format.cli({ all: true }),
                       winston.format.simple()
                     )
           }),
