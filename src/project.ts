@@ -1,45 +1,45 @@
-import { exec } from "child_process";
+import { ChildProcess, exec } from "child_process";
 import { readOutput } from "./io";
 import { optionsToArgs } from "./cli/mapper";
 import { ProjectChoices, toNestOptions } from "./cli/project";
+import { logger } from "./logger";
 
-export interface ProjectBuilder {
-  build(choices: ProjectChoices): Promise<void>;
+export async function nestNewProject(choices: ProjectChoices) {
+  const optionString = optionsToArgs(choices.options, toNestOptions);
+
+  await nestProjectGenerate(optionString, choices);
+  if (choices.options.dryRun) {
+    return;
+  }
+  await hygenDependencies(optionString, choices);
+}
+async function nestProjectGenerate(
+  optionString: string,
+  choices: ProjectChoices
+) {
+  logger.info(`Creating new nest project`);
+  const outputNest = exec(
+    `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
+  );
+  await readAndCheckOutput(outputNest);
 }
 
-export class NestJSProjectBuilder implements ProjectBuilder {
-  async build(choices: ProjectChoices): Promise<void> {
+async function hygenDependencies(
+  optionString: string,
+  choices: ProjectChoices
+) {
+  logger.info(`Creating Hygen depencencies`);
+  const outputPackage = exec(
+    `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
+  );
+  await readAndCheckOutput(outputPackage);
+}
 
-    const optionString = optionsToArgs(choices.options, toNestOptions);
-    const outputNest = exec(
-      `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
-    );
-
-    try {
-      await readOutput(outputNest);
-    } catch (err: any) {
-      console.error(`Something was wrong ${err}`);
-      return;
-    }
-
-    if (choices.options.dryRun) {
-      return;
-    }
-
-    const outputPackage = exec(
-      `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
-    );
-
-    await readOutput(outputPackage).catch((reason) => {
-      console.error(`Something was wrong ${reason}`);
-    });
-
-    const hygen = exec(
-      `hygen controller new --project ${choices.name} && hygen persistence new --project ${choices.name} && hygen app new --project ${choices.name}`
-    );
-
-    await readOutput(hygen).catch((reason) => {
-      console.error(`Something was wrong ${reason}`);
-    });
+async function readAndCheckOutput(outputNest: ChildProcess) {
+  try {
+    await readOutput(outputNest);
+  } catch (err: any) {
+    logger.error(`Something was wrong ${err}`);
+    return;
   }
 }

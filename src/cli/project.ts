@@ -1,7 +1,7 @@
 import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
 import { validate } from "./validator";
-import { NestJSProjectBuilder } from "../project";
+import { nestNewProject } from "../project";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -54,7 +54,6 @@ export const handleProjectCommand = async (
     return;
   }
 
-  const builder = new NestJSProjectBuilder();
-  builder.build(choices);
+  nestNewProject(choices);
 
 };
