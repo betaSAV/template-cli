@@ -1,9 +1,9 @@
 import { execFunction } from "./io";
 import { optionsToArgs } from "./cli/mapper";
 import { ProjectChoices, toNestOptions } from "./cli/project";
-import { logger } from "./logger";
+import { Logger } from "./logger";
 
-export async function nestNewProject(choices: ProjectChoices) {
+export async function buildNewProject(choices: ProjectChoices) {
   const optionString = optionsToArgs(choices.options, toNestOptions);
 
   try {
@@ -13,7 +13,7 @@ export async function nestNewProject(choices: ProjectChoices) {
     }
     await hygenDependencies(choices);
   } catch (err: any) {
-    logger.error(`Something was wrong ${err}`);
+    Logger.error(`Something was wrong ${err}`);
     return;
   }
 }
@@ -22,14 +22,14 @@ async function nestProjectGenerate(
   optionString: string,
   choices: ProjectChoices
 ): Promise<void> {
-  logger.info(`Creating new nest project`);
+  Logger.info(`Creating new nest project`);
   await execFunction(
     `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
   );
 }
 
 async function hygenDependencies(choices: ProjectChoices): Promise<void> {
-  logger.info(`Creating Hygen depencencies`);
+  Logger.info(`Creating Hygen depencencies`);
   await execFunction(
     `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
   );

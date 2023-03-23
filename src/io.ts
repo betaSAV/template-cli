@@ -1,6 +1,5 @@
 import { ChildProcess, exec } from "child_process";
-import { logger } from "./logger";
-import fs from "fs";
+import { Logger } from "./logger";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
@@ -51,12 +50,7 @@ async function readAndCheckOutput(process: ChildProcess): Promise<void> {
   try {
     await readOutput(process);
   } catch (err: any) {
-    logger.error(`Something was wrong ${err}`);
+    Logger.error(`Something was wrong ${err}`);
     throw err;
   }
-}
-
-export function prettierFormat(project: string) {
-  const packageManager = fs.existsSync("yarn.lock") ? "yarn" : "npx";
-  execFunction(`hygen prettier apply --project ${project} --packageManager ${packageManager}`);
 }
