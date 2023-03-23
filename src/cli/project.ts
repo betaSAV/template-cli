@@ -54,6 +54,10 @@ export const handleProjectCommand = async (
     return;
   }
 
-  nestNewProject(choices);
-
+  try {
+    nestNewProject(choices);
+  } catch (err: any) {
+    console.error(`Something was wrong ${err}`);
+    process.exitCode = 1;
+  }
 };

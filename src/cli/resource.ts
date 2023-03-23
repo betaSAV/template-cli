@@ -1,9 +1,7 @@
-import { exec } from "child_process";
 import inquirer from "inquirer";
 import fs from "fs";
 import { newResourceQuestions } from "./questions/resource";
 import { OptionsMapping, optionsToArgs } from "./mapper";
-import { readOutput } from "../io";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
 import { nestNewResource } from "../resource";
 import { logger } from "../logger";

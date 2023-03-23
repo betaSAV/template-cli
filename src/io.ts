@@ -1,4 +1,5 @@
-import { ChildProcess } from "child_process";
+import { ChildProcess, exec } from "child_process";
+import { logger } from "./logger";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
@@ -38,4 +39,18 @@ export function readOutput(p: ChildProcess): Promise<void> {
       reject(error);
     });
   });
+}
+
+export async function execFunction(functionToExecute: string): Promise<void> {
+  const funct = exec(functionToExecute);
+  await readAndCheckOutput(funct);
+}
+
+async function readAndCheckOutput(process: ChildProcess): Promise<void> {
+try {
+  await readOutput(process);
+} catch (err: any) {
+  logger.error(`Something was wrong ${err}`);
+  throw err;
+}
 }

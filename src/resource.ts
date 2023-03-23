@@ -1,5 +1,4 @@
-import { ChildProcess, exec } from "child_process";
-import { readOutput } from "./io";
+import { execFunction } from "./io";
 import { optionsToArgs } from "./cli/mapper";
 import { ProjectOptions, ProjectChoices, toNestOptions } from "./cli/resource";
 import { logger } from "./logger";
@@ -37,16 +36,4 @@ async function hygenDependencies(
   await execFunction(`hygen resource new --name ${choices.name} --project ${options.project}`);
 }
 
-async function execFunction(functionToExecute: string): Promise<void> {
-    const funct = exec(functionToExecute);
-    await readAndCheckOutput(funct);
-}
 
-async function readAndCheckOutput(outputNest: ChildProcess): Promise<void> {
-  try {
-    await readOutput(outputNest);
-  } catch (err: any) {
-    logger.error(`Something was wrong ${err}`);
-    throw err;
-  }
-}
