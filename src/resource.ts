@@ -4,7 +4,7 @@ import { optionsToArgs } from "./cli/mapper";
 import { ProjectOptions, ProjectChoices, toNestOptions } from "./cli/resource";
 import { logger } from "./logger";
 
-export async function nestNewResource(choices: ProjectChoices) {
+export async function nestNewResource(choices: ProjectChoices): Promise<void> {
   const optionString = optionsToArgs(choices.options, toNestOptions);
 
   const originalDirectory = process.cwd();
@@ -42,7 +42,7 @@ async function execFunction(functionToExecute: string): Promise<void> {
     await readAndCheckOutput(funct);
 }
 
-async function readAndCheckOutput(outputNest: ChildProcess) {
+async function readAndCheckOutput(outputNest: ChildProcess): Promise<void> {
   try {
     await readOutput(outputNest);
   } catch (err: any) {
