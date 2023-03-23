@@ -3,8 +3,8 @@ import fs from "fs";
 import { newResourceQuestions } from "./questions/resource";
 import { OptionsMapping, optionsToArgs } from "./mapper";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
-import { nestNewResource } from "../resource";
-import { logger } from "../logger";
+import { generateNewResource } from "../resource";
+import { Logger } from "../logger";
 import { prettierFormat } from "../io";
 
 export interface ElementAnswers {
@@ -54,10 +54,10 @@ export const handleResourceCommand = async (
   }
   
   try {
-    await nestNewResource(choices);
+    await generateNewResource(choices);
     prettierFormat(options.project);
   } catch (err: any) {
-    logger.error(`Something was wrong ${err}`);
+    Logger.error(`Something was wrong ${err}`);
     process.exitCode = 1;
   }
 };

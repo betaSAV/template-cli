@@ -1,5 +1,5 @@
 import { ChildProcess, exec } from "child_process";
-import { logger } from "./logger";
+import { Logger } from "./logger";
 import fs from "fs";
 
 export function readInput(p: ChildProcess) {
@@ -51,7 +51,7 @@ async function readAndCheckOutput(process: ChildProcess): Promise<void> {
   try {
     await readOutput(process);
   } catch (err: any) {
-    logger.error(`Something was wrong ${err}`);
+    Logger.error(`Something was wrong ${err}`);
     throw err;
   }
 }

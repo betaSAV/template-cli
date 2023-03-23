@@ -1,7 +1,7 @@
 import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
 import { validate } from "./validator";
-import { nestNewProject } from "../project";
+import { buildNewProject } from "../project";
 import { prettierFormat } from "../io";
 
 export enum PackageManager {
@@ -56,7 +56,7 @@ export const handleProjectCommand = async (
   }
 
   try {
-    await nestNewProject(choices);
+    await buildNewProject(choices);
     prettierFormat(choices.name);
   } catch (err: any) {
     console.error(`Something was wrong ${err}`);
