@@ -5,6 +5,7 @@ import { OptionsMapping, optionsToArgs } from "./mapper";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
 import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
+import { prettierFormat } from "../io";
 
 export interface ElementAnswers {
   resourceName: string;
@@ -53,7 +54,8 @@ export const handleResourceCommand = async (
   }
   
   try {
-    generateNewResource(choices);
+    await generateNewResource(choices);
+    prettierFormat(options.project);
   } catch (err: any) {
     Logger.error(`Something was wrong ${err}`);
     process.exitCode = 1;

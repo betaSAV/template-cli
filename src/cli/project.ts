@@ -2,6 +2,7 @@ import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
 import { validate } from "./validator";
 import { buildNewProject } from "../project";
+import { prettierFormat } from "../io";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -55,7 +56,9 @@ export const handleProjectCommand = async (
   }
 
   try {
-    buildNewProject(choices);
+    await buildNewProject(choices);
+    prettierFormat(choices.name);
+
   } catch (err: any) {
     console.error(`Something was wrong ${err}`);
     process.exitCode = 1;

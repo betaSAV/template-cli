@@ -1,5 +1,6 @@
 import { ChildProcess, exec } from "child_process";
 import { Logger } from "./logger";
+import fs from "fs";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
