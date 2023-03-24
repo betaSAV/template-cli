@@ -1,8 +1,8 @@
 import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
-import { exec } from "child_process";
-import { OptionsMapping, optionsToArgs } from "./mapper";
+import { OptionsMapping } from "./mapper";
 import { validate } from "./validator";
-import { readOutput } from "../io";
+import { nestNewProject } from "../project";
+import { prettierFormat } from "../io";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -29,7 +29,7 @@ export class ProjectOptions {
   skipGit?: boolean;
 }
 
-const toNestOptions: OptionsMapping<ProjectOptions> = {
+export const toNestOptions: OptionsMapping<ProjectOptions> = {
   dryRun: "-d",
   skipGit: "-s",
 };
@@ -55,33 +55,11 @@ export const handleProjectCommand = async (
     return;
   }
 
-  const optionString = optionsToArgs(choices.options, toNestOptions);
-
-  const outputNest = exec(
-    `nest new ${optionString} ${choices.name} -p ${choices.packageManager}`
-  );
   try {
-    await readOutput(outputNest);
+    await nestNewProject(choices);
+    prettierFormat(choices.name);
   } catch (err: any) {
     console.error(`Something was wrong ${err}`);
-    return;
+    process.exitCode = 1;
   }
-
-  if (choices.options.dryRun) {
-    return;
-  }
-
-  const outputPackage = exec(
-    `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
-  );
-  await readOutput(outputPackage).catch((reason) => {
-    console.error(`Something was wrong ${reason}`);
-  });
-
-  const hygen = exec(
-    `hygen controller new --project ${choices.name} && hygen persistence new --project ${choices.name} && hygen app new --project ${choices.name}`
-  );
-  await readOutput(hygen).catch((reason) => {
-    console.error(`Something was wrong ${reason}`);
-  });
 };

@@ -22,7 +22,8 @@
     "commander": "^10.0.0",
     "hygen": "^6.2.11",
     "inquirer": "^8.0.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
