@@ -65,5 +65,5 @@ function packageManagerChecker(project: string): string {
   if (fs.existsSync(`./${project}/yarn.lock`)) {
     return "yarn";
   }
-  return "npm";
+  return "npx";
 }
