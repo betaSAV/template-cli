@@ -10,3 +10,5 @@ sh: cd <%= cwd %>/<%=project%> && <%= packageManager %> install
     "@nestjs/passport": "^9.0.3",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "helmet": "^6.0.1",
+    "@nestjs/throttler": "^4.0.0",
