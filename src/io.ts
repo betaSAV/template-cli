@@ -57,6 +57,13 @@ async function readAndCheckOutput(process: ChildProcess): Promise<void> {
 }
 
 export function prettierFormat(project: string) {
-  const packageManager = fs.existsSync(`./${project}/yarn.lock`) ? "yarn" : "npx";
+  const packageManager = packageManagerChecker(project);
   execFunction(`hygen prettier apply --project ${project} --packageManager ${packageManager}`);
+}
+
+function packageManagerChecker(project: string): string {
+  if (fs.existsSync(`./${project}/yarn.lock`)) {
+    return "yarn";
+  }
+  return "npm";
 }
