@@ -1,8 +1,9 @@
 ---
 inject: true
 to: <%= cwd %>/<%=project%>/package.json
-after: devDependencies
-skip_if: "@types/passport-jwt"
+after: dependencies
+skip_if: "helmet"
 sh: cd <%= cwd %>/<%=project%> && <%= packageManager %> install
 ---
-    "@types/passport-jwt": "^3.0.8",
+    "helmet": "^6.0.1",
+    "@nestjs/throttler": "^4.0.0",
