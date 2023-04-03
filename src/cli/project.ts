@@ -1,8 +1,7 @@
 import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
-import { validate } from "./validator";
 import { buildNewProject } from "../project";
-import { prettierFormat } from "../io";
+import { prettierFormat, validateAndLogErrors } from "../io";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -49,9 +48,11 @@ export const handleProjectCommand = async (
   //   choices.name = answers.name;
   //   choices.packageManager = answers.packageManager;
   // }
-  const errors = await validate(ProjectChoices, choices);
-  if (errors.length > 0) {
-    console.error(errors.join("\n"));
+  try {
+    await validateAndLogErrors(ProjectChoices, choices);
+    await validateAndLogErrors(ProjectOptions, options);
+  } catch (err: any) {
+    process.exitCode = 1;
     return;
   }
 

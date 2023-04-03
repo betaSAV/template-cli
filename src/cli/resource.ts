@@ -5,7 +5,7 @@ import { OptionsMapping, optionsToArgs } from "./mapper";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
 import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
-import { prettierFormat } from "../io";
+import { prettierFormat, validateAndLogErrors } from "../io";
 
 export interface ElementAnswers {
   resourceName: string;
@@ -24,7 +24,7 @@ export class ProjectOptions {
   @IsBoolean()
   dryRun?: boolean;
 
-  @IsBoolean()
+  @IsAlpha()
   project: string;
 }
 
@@ -48,8 +48,17 @@ export const handleResourceCommand = async (
     options.project = answers.project;
   }
 
+  try {
+    await validateAndLogErrors(ProjectChoices, choices);
+    await validateAndLogErrors(ProjectOptions, options);
+  } catch (err: any) {
+    process.exitCode = 1;
+    return;
+  }
+  
+
   if (!fs.existsSync(options.project)) {
-    console.log(`Project directory '${options.project}' does not exist.`);
+    Logger.error(`Project directory '${options.project}' does not exist.`);
     return;
   }
   
