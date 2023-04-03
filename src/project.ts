@@ -45,5 +45,7 @@ async function hygenDependencies(choices: ProjectChoices): Promise<void> {
   await execFunction(
     `hygen security apply --project ${choices.name} --packageManager ${choices.packageManager}`
   );
-
+  await execFunction(
+    `hygen auth new --project ${choices.name} --packageManager ${choices.packageManager}`
+  );
 }
