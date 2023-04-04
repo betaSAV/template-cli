@@ -2,6 +2,7 @@ import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
 import { buildNewProject } from "../project";
 import { prettierFormat, validateAndLogErrors } from "../io";
+import { Logger } from "../logger";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -56,7 +57,7 @@ export const handleProjectCommand = async (
     prettierFormat(choices.name);
 
   } catch (err: any) {
-    console.error(`Something was wrong: ${err.message}`);
+    Logger.error(`Something was wrong: ${err.message}`);
     process.exitCode = 1;
   }
 };

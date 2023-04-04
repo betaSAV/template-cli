@@ -55,7 +55,7 @@ export const handleResourceCommand = async (
     await generateNewResource(choices);
     prettierFormat(options.project);
   } catch (err: any) {
-    console.error(`Something was wrong: ${err.message}`);
+    Logger.error(`Something was wrong: ${err.message}`);
     process.exitCode = 1;
   }
 };

@@ -22,23 +22,23 @@ export function readInput(p: ChildProcess) {
 export function readOutput(p: ChildProcess): Promise<void> {
   return new Promise((resolve, reject) => {
     p?.stdout?.on("data", (data: any) => {
-      console.log(`${data}`);
+      Logger.info(`${data}`);
     });
 
     // p?.stderr?.on("data", (data: any) => {
-    //   console.error(`stderr: ${data}`);
+    //   Logger.error(`stderr: ${data}`);
     // });
 
     p.on("close", (code: number | null) => {
       if (!!code && code > 0) {
-        console.log(`child process exited with code ${code}`);
+        Logger.info(`child process exited with code ${code}`);
         reject();
       }
       resolve();
     });
 
     p.on("error", (error: Error) => {
-      console.error(`child process error: ${error}`);
+      Logger.error(`child process error: ${error}`);
       reject(error);
     });
   });
