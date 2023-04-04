@@ -18,7 +18,7 @@ export const validate = async <T>(
 export async function validateAndLogErrors<T>(validator: ClassConstructor<object>, value: T): Promise<void> {
   const errors = await validate(validator, value);
   if (errors.length > 0) {
-    Logger.error(`\n\t${errors.join(",\n\t")}`);
+    Logger.error(`Class constructor: ${validator.name}\n\t\t${errors.join(",\n\t")}`);
     throw new Error("Command validation failed");
   }
 }
