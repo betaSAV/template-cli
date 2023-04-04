@@ -1,9 +1,9 @@
 import { execFunction } from "./io";
 import { optionsToArgs } from "./cli/mapper";
-import { ProjectOptions, ProjectChoices, toNestOptions } from "./cli/resource";
+import { ResourceChoices, ResourceOptions, toNestOptions } from "./cli/resource";
 import { Logger } from "./logger";
 
-export async function generateNewResource(choices: ProjectChoices): Promise<void> {
+export async function generateNewResource(choices: ResourceChoices): Promise<void> {
   const optionString = optionsToArgs(choices.options, toNestOptions);
 
   const originalDirectory = process.cwd();
@@ -22,15 +22,15 @@ export async function generateNewResource(choices: ProjectChoices): Promise<void
 }
 async function nestResourceGenerate(
   optionString: string,
-  choices: ProjectChoices
+  choices: ResourceChoices
 ): Promise<void> {
   Logger.info(`Creating new nest resource`);
   await execFunction(`nest generate resource ${optionString} ${choices.name}`);
 }
 
 async function hygenDependencies(
-  options: ProjectOptions,
-  choices: ProjectChoices
+  options: ResourceOptions,
+  choices: ResourceChoices
 ): Promise<void> {
   Logger.info(`Creating Hygen depencencies`);
   await execFunction(`hygen resource new --name ${choices.name} --project ${options.project}`);

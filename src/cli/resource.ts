@@ -5,39 +5,39 @@ import { OptionsMapping, optionsToArgs } from "./mapper";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
 import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
-import { prettierFormat } from "../io";
+import { prettierFormat, projectExists, validateAndLogErrors } from "../io";
 
 export interface ElementAnswers {
   resourceName: string;
   project: string;
 }
 
-export class ProjectChoices {
+export class ResourceChoices {
   @IsAlpha()
   name: string;
 
-  options: ProjectOptions;
+  options: ResourceOptions;
 }
 
-export class ProjectOptions {
+export class ResourceOptions {
   @IsOptional()
   @IsBoolean()
   dryRun?: boolean;
 
-  @IsBoolean()
+  @IsAlpha()
   project: string;
 }
 
-export const toNestOptions: OptionsMapping<ProjectOptions> = {
+export const toNestOptions: OptionsMapping<ResourceOptions> = {
   dryRun: "-d",
   project: "-p",
 };
 
 export const handleResourceCommand = async (
   elementName: string,
-  options: ProjectOptions
+  options: ResourceOptions
 ) => {
-  const choices: ProjectChoices = {
+  const choices: ResourceChoices = {
     name: elementName,
     options,
   };
@@ -47,17 +47,17 @@ export const handleResourceCommand = async (
     elementName = answers.resourceName;
     options.project = answers.project;
   }
-
-  if (!fs.existsSync(options.project)) {
-    console.log(`Project directory '${options.project}' does not exist.`);
-    return;
-  }
   
   try {
+    await validateAndLogErrors(ResourceChoices, choices);
+    await validateAndLogErrors(ResourceOptions, options);
+    projectExists(options.project);
     await generateNewResource(choices);
     prettierFormat(options.project);
   } catch (err: any) {
-    Logger.error(`Something was wrong ${err}`);
+    Logger.error(`Something was wrong: ${err.message}`);
     process.exitCode = 1;
   }
 };
+
+

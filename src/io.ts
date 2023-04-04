@@ -1,6 +1,8 @@
 import { ChildProcess, exec } from "child_process";
 import { Logger } from "./logger";
 import fs from "fs";
+import { ClassConstructor } from "class-transformer";
+import { validate } from "./cli/validator";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
@@ -20,23 +22,23 @@ export function readInput(p: ChildProcess) {
 export function readOutput(p: ChildProcess): Promise<void> {
   return new Promise((resolve, reject) => {
     p?.stdout?.on("data", (data: any) => {
-      console.log(`${data}`);
+      Logger.info(`${data}`);
     });
 
     // p?.stderr?.on("data", (data: any) => {
-    //   console.error(`stderr: ${data}`);
+    //   Logger.error(`stderr: ${data}`);
     // });
 
     p.on("close", (code: number | null) => {
       if (!!code && code > 0) {
-        console.log(`child process exited with code ${code}`);
+        Logger.info(`child process exited with code ${code}`);
         reject();
       }
       resolve();
     });
 
     p.on("error", (error: Error) => {
-      console.error(`child process error: ${error}`);
+      Logger.error(`child process error: ${error}`);
       reject(error);
     });
   });
@@ -66,4 +68,18 @@ function packageManagerChecker(project: string): string {
     return "yarn";
   }
   return "npx";
+}
+
+export async function validateAndLogErrors<T>(validator: ClassConstructor<object>, value: T): Promise<void> {
+  const errors = await validate(validator, value);
+  if (errors.length > 0) {
+    Logger.error(`\n\t${errors.join(",\n\t")}`);
+    throw new Error("Command validation failed");
+  }
+}
+
+export function projectExists(project: string) {
+  if (!fs.existsSync(project)) {
+    throw new Error(`Project directory '${project}' does not exist.`);
+  }
 }
