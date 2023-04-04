@@ -48,20 +48,15 @@ export const handleProjectCommand = async (
   //   choices.name = answers.name;
   //   choices.packageManager = answers.packageManager;
   // }
+
   try {
     await validateAndLogErrors(ProjectChoices, choices);
     await validateAndLogErrors(ProjectOptions, options);
-  } catch (err: any) {
-    process.exitCode = 1;
-    return;
-  }
-
-  try {
     await buildNewProject(choices);
     prettierFormat(choices.name);
 
   } catch (err: any) {
-    console.error(`Something was wrong ${err}`);
+    console.error(`Something was wrong: ${err.message}`);
     process.exitCode = 1;
   }
 };

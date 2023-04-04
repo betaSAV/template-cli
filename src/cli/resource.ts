@@ -5,7 +5,7 @@ import { OptionsMapping, optionsToArgs } from "./mapper";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
 import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
-import { prettierFormat, validateAndLogErrors } from "../io";
+import { prettierFormat, projectExists, validateAndLogErrors } from "../io";
 
 export interface ElementAnswers {
   resourceName: string;
@@ -47,26 +47,17 @@ export const handleResourceCommand = async (
     elementName = answers.resourceName;
     options.project = answers.project;
   }
-
+  
   try {
     await validateAndLogErrors(ResourceChoices, choices);
     await validateAndLogErrors(ResourceOptions, options);
-  } catch (err: any) {
-    process.exitCode = 1;
-    return;
-  }
-  
-
-  if (!fs.existsSync(options.project)) {
-    Logger.error(`Project directory '${options.project}' does not exist.`);
-    return;
-  }
-  
-  try {
+    projectExists(options.project);
     await generateNewResource(choices);
     prettierFormat(options.project);
   } catch (err: any) {
-    Logger.error(`Something was wrong ${err}`);
+    console.error(`Something was wrong: ${err.message}`);
     process.exitCode = 1;
   }
 };
+
+
