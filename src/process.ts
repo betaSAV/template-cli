@@ -1,6 +1,5 @@
 import { ChildProcess, exec } from "child_process";
 import { Logger } from "./logger";
-import fs from "fs";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
@@ -53,23 +52,5 @@ async function readAndCheckOutput(process: ChildProcess): Promise<void> {
   } catch (err: any) {
     Logger.error(`Something was wrong ${err}`);
     throw err;
-  }
-}
-
-export function prettierFormat(project: string) {
-  const packageManager = packageManagerChecker(project);
-  execFunction(`hygen prettier apply --project ${project} --packageManager ${packageManager}`);
-}
-
-function packageManagerChecker(project: string): string {
-  if (fs.existsSync(`./${project}/yarn.lock`)) {
-    return "yarn";
-  }
-  return "npx";
-}
-
-export function projectExists(project: string) {
-  if (!fs.existsSync(project)) {
-    throw new Error(`Project directory '${project}' does not exist.`);
   }
 }

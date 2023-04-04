@@ -1,4 +1,4 @@
-import { execFunction } from "./io";
+import { execFunction } from "./process";
 import { optionsToArgs } from "./cli/mapper";
 import { ResourceChoices, ResourceOptions, toNestOptions } from "./cli/resource";
 import { Logger } from "./logger";

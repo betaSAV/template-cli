@@ -1,7 +1,7 @@
 import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
 import { buildNewProject } from "../project";
-import { prettierFormat } from "../io";
+import { prettierFormat } from "../fs";
 import { Logger } from "../logger";
 import { validateAndLogErrors } from "../validator";
 
@@ -56,7 +56,6 @@ export const handleProjectCommand = async (
     await validateAndLogErrors(ProjectOptions, options);
     await buildNewProject(choices);
     prettierFormat(choices.name);
-
   } catch (err: any) {
     Logger.error(`Something was wrong: ${err.message}`);
     process.exitCode = 1;

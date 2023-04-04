@@ -1,11 +1,10 @@
 import inquirer from "inquirer";
-import fs from "fs";
 import { newResourceQuestions } from "./questions/resource";
 import { OptionsMapping, optionsToArgs } from "./mapper";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
 import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
-import { prettierFormat, projectExists } from "../io";
+import { prettierFormat, pathExists } from "../fs";
 import { validateAndLogErrors } from "../validator";
 
 export interface ElementAnswers {
@@ -52,7 +51,10 @@ export const handleResourceCommand = async (
   try {
     await validateAndLogErrors(ResourceChoices, choices);
     await validateAndLogErrors(ResourceOptions, options);
-    projectExists(options.project);
+    if (!pathExists(options.project)) {
+      Logger.error(`Project ${options.project} does not exist`);
+      return;
+    }
     await generateNewResource(choices);
     prettierFormat(options.project);
   } catch (err: any) {
