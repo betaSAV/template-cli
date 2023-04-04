@@ -73,8 +73,13 @@ function packageManagerChecker(project: string): string {
 export async function validateAndLogErrors<T>(validator: ClassConstructor<object>, value: T): Promise<void> {
   const errors = await validate(validator, value);
   if (errors.length > 0) {
-    Logger.warn(`Command validation failed.`);
     Logger.error(`\n\t${errors.join(",\n\t")}`);
-    throw new Error();
+    throw new Error("Command validation failed");
+  }
+}
+
+export function projectExists(project: string) {
+  if (!fs.existsSync(project)) {
+    throw new Error(`Project directory '${project}' does not exist.`);
   }
 }
