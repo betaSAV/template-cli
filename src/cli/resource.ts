@@ -12,14 +12,14 @@ export interface ElementAnswers {
   project: string;
 }
 
-export class ProjectChoices {
+export class ResourceChoices {
   @IsAlpha()
   name: string;
 
-  options: ProjectOptions;
+  options: ResourceOptions;
 }
 
-export class ProjectOptions {
+export class ResourceOptions {
   @IsOptional()
   @IsBoolean()
   dryRun?: boolean;
@@ -28,16 +28,16 @@ export class ProjectOptions {
   project: string;
 }
 
-export const toNestOptions: OptionsMapping<ProjectOptions> = {
+export const toNestOptions: OptionsMapping<ResourceOptions> = {
   dryRun: "-d",
   project: "-p",
 };
 
 export const handleResourceCommand = async (
   elementName: string,
-  options: ProjectOptions
+  options: ResourceOptions
 ) => {
-  const choices: ProjectChoices = {
+  const choices: ResourceChoices = {
     name: elementName,
     options,
   };
@@ -49,8 +49,8 @@ export const handleResourceCommand = async (
   }
 
   try {
-    await validateAndLogErrors(ProjectChoices, choices);
-    await validateAndLogErrors(ProjectOptions, options);
+    await validateAndLogErrors(ResourceChoices, choices);
+    await validateAndLogErrors(ResourceOptions, options);
   } catch (err: any) {
     process.exitCode = 1;
     return;
