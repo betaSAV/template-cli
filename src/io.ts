@@ -1,8 +1,6 @@
 import { ChildProcess, exec } from "child_process";
 import { Logger } from "./logger";
 import fs from "fs";
-import { ClassConstructor } from "class-transformer";
-import { validate } from "./validator";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
@@ -68,14 +66,6 @@ function packageManagerChecker(project: string): string {
     return "yarn";
   }
   return "npx";
-}
-
-export async function validateAndLogErrors<T>(validator: ClassConstructor<object>, value: T): Promise<void> {
-  const errors = await validate(validator, value);
-  if (errors.length > 0) {
-    Logger.error(`\n\t${errors.join(",\n\t")}`);
-    throw new Error("Command validation failed");
-  }
 }
 
 export function projectExists(project: string) {

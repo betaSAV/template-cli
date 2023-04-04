@@ -1,8 +1,9 @@
 import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
 import { buildNewProject } from "../project";
-import { prettierFormat, validateAndLogErrors } from "../io";
+import { prettierFormat } from "../io";
 import { Logger } from "../logger";
+import { validateAndLogErrors } from "../validator";
 
 export enum PackageManager {
   YARN = "yarn",

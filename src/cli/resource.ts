@@ -5,7 +5,8 @@ import { OptionsMapping, optionsToArgs } from "./mapper";
 import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
 import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
-import { prettierFormat, projectExists, validateAndLogErrors } from "../io";
+import { prettierFormat, projectExists } from "../io";
+import { validateAndLogErrors } from "../validator";
 
 export interface ElementAnswers {
   resourceName: string;
