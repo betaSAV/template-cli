@@ -73,6 +73,7 @@ function packageManagerChecker(project: string): string {
 export async function validateAndLogErrors<T>(validator: ClassConstructor<object>, value: T): Promise<void> {
   const errors = await validate(validator, value);
   if (errors.length > 0) {
+    Logger.warn(`Command validation failed.`);
     Logger.error(`\n\t${errors.join(",\n\t")}`);
     throw new Error();
   }
