@@ -2,7 +2,7 @@ import { ChildProcess, exec } from "child_process";
 import { Logger } from "./logger";
 import fs from "fs";
 import { ClassConstructor } from "class-transformer";
-import { validate } from "./cli/validator";
+import { validate } from "./validator";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
