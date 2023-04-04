@@ -1,7 +1,7 @@
 import fs from "fs";
 import { execFunction } from "./process";
 
-enum PackageExecutors {
+enum PackageExecutor {
   YARN = "yarn",
   NPM = "npx",
 }
@@ -11,11 +11,11 @@ export function prettierFormat(project: string) {
   execFunction(`hygen prettier apply --project ${project} --packageManager ${packageManager}`);
 }
 
-function prettierExecutor(project: string): PackageExecutors {
+function prettierExecutor(project: string): PackageExecutor {
   if (pathExists(`./${project}/yarn.lock`)) {
-    return PackageExecutors.YARN;
+    return PackageExecutor.YARN;
   } 
-  return PackageExecutors.NPM;
+  return PackageExecutor.NPM;
 }
 
 export function pathExists(path: string): boolean {
