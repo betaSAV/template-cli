@@ -2,7 +2,7 @@
 inject: true
 to: <%= cwd %>/<%=project%>/src/app.module.ts
 skip_if: "ThrottlerModule.forRoot"
-after: "}),"
+after: "\\}\\),"
 ---
 ThrottlerModule.forRoot({
       ttl: 60,
