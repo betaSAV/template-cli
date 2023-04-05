@@ -32,7 +32,7 @@ async function hygenDependencies(
   options: ResourceOptions,
   choices: ResourceChoices
 ): Promise<void> {
-  Logger.info(`Creating Hygen depencencies`);
+  Logger.info(`Adding PersistenceService (Module, Controller, Service, Entity) to the project`);
   await execFunction(`hygen resource new --name ${choices.name} --project ${options.project}`);
 }
 

@@ -19,7 +19,7 @@ export function readInput(p: ChildProcess) {
 export function readOutput(p: ChildProcess): Promise<void> {
   return new Promise((resolve, reject) => {
     p?.stdout?.on("data", (data: any) => {
-      Logger.info(`${data}`);
+      //Logger.info(`${data}`);
     });
 
     // p?.stderr?.on("data", (data: any) => {

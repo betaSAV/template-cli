@@ -1,4 +1,5 @@
 import fs from "fs";
+import { Logger } from "./logger";
 import { execFunction } from "./process";
 
 enum PackageExecutor {
@@ -7,6 +8,7 @@ enum PackageExecutor {
 }
 
 export function prettierFormat(project: string) {
+  Logger.info(`Formatting project with prettier`);
   const packageManager = prettierExecutor(project);
   execFunction(`hygen prettier apply --project ${project} --packageManager ${packageManager}`);
 }
