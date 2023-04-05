@@ -1,11 +1,12 @@
 import inquirer from "inquirer";
 import { newResourceQuestions } from "./questions/resource";
 import { OptionsMapping, optionsToArgs } from "./mapper";
-import { IsAlpha, IsBoolean, IsOptional } from "class-validator";
+import { IsAlpha } from "class-validator";
 import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
 import { prettierFormat, pathExists } from "../fs";
 import { validateAndLogErrors } from "../validator";
+import { Options } from "./index";
 
 export interface ElementAnswers {
   resourceName: string;
@@ -19,11 +20,7 @@ export class ResourceChoices {
   options: ResourceOptions;
 }
 
-export class ResourceOptions {
-  @IsOptional()
-  @IsBoolean()
-  dryRun?: boolean;
-
+export class ResourceOptions extends Options {
   @IsAlpha()
   project: string;
 }
@@ -47,7 +44,7 @@ export const handleResourceCommand = async (
     elementName = answers.resourceName;
     options.project = answers.project;
   }
-  
+
   try {
     await validateAndLogErrors(ResourceChoices, choices);
     await validateAndLogErrors(ResourceOptions, options);
@@ -62,5 +59,3 @@ export const handleResourceCommand = async (
     process.exitCode = 1;
   }
 };
-
-

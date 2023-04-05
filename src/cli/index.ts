@@ -1,3 +1,4 @@
+import { IsBoolean, IsOptional } from "class-validator";
 import { Command } from "commander";
 import { handleProjectCommand } from "./project";
 import { handleResourceCommand } from "./resource";
@@ -47,4 +48,10 @@ export class CLIBuilder {
       .option("-p, --project <project>", "Project to generate resource in")
       .action(handleResourceCommand);
   }
+}
+
+export class Options {
+  @IsOptional()
+  @IsBoolean()
+  dryRun?: boolean;
 }

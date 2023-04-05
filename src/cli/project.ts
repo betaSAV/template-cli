@@ -4,6 +4,7 @@ import { buildNewProject } from "../project";
 import { prettierFormat } from "../fs";
 import { Logger } from "../logger";
 import { validateAndLogErrors } from "../validator";
+import { Options } from "./index";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -20,11 +21,7 @@ export class ProjectChoices {
   options: ProjectOptions;
 }
 
-export class ProjectOptions {
-  @IsOptional()
-  @IsBoolean()
-  dryRun?: boolean;
-
+export class ProjectOptions extends Options {
   @IsOptional()
   @IsBoolean()
   skipGit?: boolean;
