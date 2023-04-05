@@ -29,6 +29,7 @@ async function nestProjectGenerate(
 }
 
 async function hygenDependencies(choices: ProjectChoices): Promise<void> {
+  choices.name = cammelCaseToKebabCase(choices.name);
   Logger.info(`Creating Hygen depencencies`);
   await execFunction(
     `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
@@ -52,3 +53,8 @@ async function hygenDependencies(choices: ProjectChoices): Promise<void> {
     `hygen swagger new --project ${choices.name}`
   );
 }
+
+function cammelCaseToKebabCase(str: string): string {
+  return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
+}
+    
