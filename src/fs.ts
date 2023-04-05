@@ -21,8 +21,5 @@ function prettierExecutor(project: string): PackageExecutor {
 }
 
 export function pathExists(path: string): boolean {
-  if (fs.existsSync(path)) {
-    return true;
-  }
-  return false;
+  return fs.existsSync(path);
 }
