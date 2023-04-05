@@ -6,7 +6,7 @@ import { generateNewResource } from "../resource";
 import { Logger } from "../logger";
 import { prettierFormat, pathExists } from "../fs";
 import { validateAndLogErrors } from "../validator";
-import { Options } from "./index";
+import { Options } from "./options";
 
 export interface ElementAnswers {
   resourceName: string;

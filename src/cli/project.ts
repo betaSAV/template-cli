@@ -4,7 +4,7 @@ import { buildNewProject } from "../project";
 import { prettierFormat } from "../fs";
 import { Logger } from "../logger";
 import { validateAndLogErrors } from "../validator";
-import { Options } from "./index";
+import { Options } from "./options";
 
 export enum PackageManager {
   YARN = "yarn",
