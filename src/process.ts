@@ -1,8 +1,5 @@
 import { ChildProcess, exec } from "child_process";
 import { Logger } from "./logger";
-import fs from "fs";
-import { ClassConstructor } from "class-transformer";
-import { validate } from "./cli/validator";
 
 export function readInput(p: ChildProcess) {
   const stdin = process.stdin;
@@ -21,14 +18,6 @@ export function readInput(p: ChildProcess) {
 
 export function readOutput(p: ChildProcess): Promise<void> {
   return new Promise((resolve, reject) => {
-    p?.stdout?.on("data", (data: any) => {
-      Logger.info(`${data}`);
-    });
-
-    // p?.stderr?.on("data", (data: any) => {
-    //   Logger.error(`stderr: ${data}`);
-    // });
-
     p.on("close", (code: number | null) => {
       if (!!code && code > 0) {
         Logger.info(`child process exited with code ${code}`);
@@ -55,31 +44,5 @@ async function readAndCheckOutput(process: ChildProcess): Promise<void> {
   } catch (err: any) {
     Logger.error(`Something was wrong ${err}`);
     throw err;
-  }
-}
-
-export function prettierFormat(project: string) {
-  const packageManager = packageManagerChecker(project);
-  execFunction(`hygen prettier apply --project ${project} --packageManager ${packageManager}`);
-}
-
-function packageManagerChecker(project: string): string {
-  if (fs.existsSync(`./${project}/yarn.lock`)) {
-    return "yarn";
-  }
-  return "npx";
-}
-
-export async function validateAndLogErrors<T>(validator: ClassConstructor<object>, value: T): Promise<void> {
-  const errors = await validate(validator, value);
-  if (errors.length > 0) {
-    Logger.error(`\n\t${errors.join(",\n\t")}`);
-    throw new Error("Command validation failed");
-  }
-}
-
-export function projectExists(project: string) {
-  if (!fs.existsSync(project)) {
-    throw new Error(`Project directory '${project}' does not exist.`);
   }
 }
