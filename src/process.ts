@@ -18,14 +18,6 @@ export function readInput(p: ChildProcess) {
 
 export function readOutput(p: ChildProcess): Promise<void> {
   return new Promise((resolve, reject) => {
-    p?.stdout?.on("data", (data: any) => {
-      //Logger.info(`${data}`);
-    });
-
-    // p?.stderr?.on("data", (data: any) => {
-    //   Logger.error(`stderr: ${data}`);
-    // });
-
     p.on("close", (code: number | null) => {
       if (!!code && code > 0) {
         Logger.info(`child process exited with code ${code}`);
