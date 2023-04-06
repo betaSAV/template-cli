@@ -29,28 +29,28 @@ async function nestProjectGenerate(
 }
 
 async function hygenDependencies(choices: ProjectChoices): Promise<void> {
-  choices.name = cammelCaseToKebabCase(choices.name);
+  const projectName: string = cammelCaseToKebabCase(choices.name);
   Logger.info(`Creating Hygen depencencies`);
   await execFunction(
-    `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
+    `hygen dependencies new --project ${projectName} --packageManager ${choices.packageManager}`
   );
   await execFunction(
-    `hygen controller new --project ${choices.name}`
+    `hygen controller new --project ${projectName}`
   );
   await execFunction(
-    `hygen persistence new --project ${choices.name}`
+    `hygen persistence new --project ${projectName}`
   );
   await execFunction(
-    `hygen app new --project ${choices.name}`
+    `hygen app new --project ${projectName}`
   );
   await execFunction(
-    `hygen security apply --project ${choices.name} --packageManager ${choices.packageManager}`
+    `hygen security apply --project ${projectName} --packageManager ${choices.packageManager}`
   );
   await execFunction(
-    `hygen auth new --project ${choices.name} --packageManager ${choices.packageManager}`
+    `hygen auth new --project ${projectName} --packageManager ${choices.packageManager}`
   );
   await execFunction(
-    `hygen swagger new --project ${choices.name}`
+    `hygen swagger new --project ${projectName}`
   );
 }
 
