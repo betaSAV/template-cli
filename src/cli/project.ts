@@ -1,8 +1,10 @@
 import { IsAlpha, IsBoolean, IsEnum, IsOptional } from "class-validator";
 import { OptionsMapping } from "./mapper";
 import { buildNewProject } from "../project";
-import { prettierFormat, validateAndLogErrors } from "../io";
+import { prettierFormat } from "../fs";
 import { Logger } from "../logger";
+import { validateAndLogErrors } from "../validator";
+import { Options } from "./options";
 
 export enum PackageManager {
   YARN = "yarn",
@@ -19,11 +21,7 @@ export class ProjectChoices {
   options: ProjectOptions;
 }
 
-export class ProjectOptions {
-  @IsOptional()
-  @IsBoolean()
-  dryRun?: boolean;
-
+export class ProjectOptions extends Options {
   @IsOptional()
   @IsBoolean()
   skipGit?: boolean;
@@ -55,7 +53,6 @@ export const handleProjectCommand = async (
     await validateAndLogErrors(ProjectOptions, options);
     await buildNewProject(choices);
     prettierFormat(choices.name);
-
   } catch (err: any) {
     Logger.error(`Something was wrong: ${err.message}`);
     process.exitCode = 1;

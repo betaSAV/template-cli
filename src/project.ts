@@ -1,4 +1,4 @@
-import { execFunction } from "./io";
+import { execFunction } from "./process";
 import { optionsToArgs } from "./cli/mapper";
 import { ProjectChoices, toNestOptions } from "./cli/project";
 import { Logger } from "./logger";
@@ -29,26 +29,38 @@ async function nestProjectGenerate(
 }
 
 async function hygenDependencies(choices: ProjectChoices): Promise<void> {
+  const projectName: string = cammelCaseToKebabCase(choices.name);
   Logger.info(`Creating Hygen depencencies`);
   await execFunction(
-    `hygen dependencies new --project ${choices.name} --packageManager ${choices.packageManager}`
+    `hygen dependencies new --project ${projectName} --packageManager ${choices.packageManager}`
   );
+  Logger.info(`Adding project controller (Generic controller)`);
   await execFunction(
-    `hygen controller new --project ${choices.name}`
+    `hygen controller new --project ${projectName}`
   );
+  Logger.info(`Adding project persistence (Base Entity)`);
   await execFunction(
-    `hygen persistence new --project ${choices.name}`
+    `hygen persistence new --project ${projectName}`
   );
+  Logger.info(`Adding TypeOrmModule to project module`);
   await execFunction(
-    `hygen app new --project ${choices.name}`
+    `hygen app new --project ${projectName}`
   );
+  Logger.info(`Adding Helmet, Cors and Throttler to project module`);
   await execFunction(
-    `hygen security apply --project ${choices.name} --packageManager ${choices.packageManager}`
+    `hygen security apply --project ${projectName} --packageManager ${choices.packageManager}`
   );
+  Logger.info(`Adding Authentification to the project (JWT, Passport)`);
   await execFunction(
-    `hygen auth new --project ${choices.name} --packageManager ${choices.packageManager}`
+    `hygen auth new --project ${projectName} --packageManager ${choices.packageManager}`
   );
+  Logger.info(`Adding Swagger to the project`);
   await execFunction(
-    `hygen swagger new --project ${choices.name}`
+    `hygen swagger new --project ${projectName}`
   );
 }
+
+function cammelCaseToKebabCase(str: string): string {
+  return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
+}
+    
