@@ -1,0 +1,18 @@
+{
+  "test": {
+    "type": "number",
+    "sqlType": "integer",
+    "default": null
+  },
+  "name": {
+    "type": "string",
+    "sqlType": "varchar",
+    "size": 256
+  },
+  "email": {
+    "type": "string",
+    "sqlType": "varchar",
+    "size": 256,
+    "default": ""
+  }
+}

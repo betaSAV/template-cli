@@ -23,11 +23,14 @@ export class ResourceChoices {
 export class ResourceOptions extends Options {
   @IsAlpha()
   project: string;
+
+  json?: string;
 }
 
 export const toNestOptions: OptionsMapping<ResourceOptions> = {
   dryRun: "-d",
   project: "-p",
+  json: "-j",
 };
 
 export const handleResourceCommand = async (
