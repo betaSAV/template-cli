@@ -12,3 +12,9 @@ Command to create a new resource:
 ```bash
 npm start -- res/resource resourceName -p projectName
 ```
+
+# TODO
+Documentació d'ús, rang d'opcions i peculiaritats
+Com funciona el Hygen, commander, etc
+
+

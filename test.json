@@ -2,12 +2,18 @@
   "test": {
     "type": "number",
     "sqlType": "integer",
-    "default": null
+    "default": null,
+    "annotations": {
+      "exclude": true
+    }
   },
   "name": {
     "type": "string",
     "sqlType": "varchar",
-    "size": 256
+    "size": 256,
+    "annotations": {
+      "apiProperty": "required"
+    }
   },
   "email": {
     "type": "string",
