@@ -22,8 +22,7 @@ export async function generateNewResource(choices: ResourceChoices): Promise<voi
     if (choices.options.json) {
       if (pathExists(choices.options.json)) {
         entityContent += generateFromJSON(choices.options.json);
-        Logger.info(`entityContent: ${entityContent}`);
-        
+        Logger.debug(`entityContent: ${entityContent}`);
         fs.writeFileSync(`./${choices.options.project}/src/${choices.name}/entities/${choices.name}.entity.ts`, entityContent, { flag: 'a' });
         await execFunction(`hygen entityContent add --name ${choices.name} --project ${choices.options.project}`);
       } else {
