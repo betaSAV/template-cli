@@ -19,6 +19,9 @@
     "type": "string",
     "sqlType": "varchar",
     "size": 256,
-    "default": ""
+    "default": "",
+    "annotations": {
+      "apiProperty": "optional"
+    }
   }
 }
