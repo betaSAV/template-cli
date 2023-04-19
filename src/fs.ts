@@ -3,15 +3,16 @@ import { Logger } from "./logger";
 import { execFunction } from "./process";
 import { IsAlpha, IsEnum, IsInt, IsOptional, IsPositive, isAlpha } from "class-validator";
 import { validateAndLogErrors } from "./validator";
+import { JSONtoSchema } from "./resource";
 
 enum PackageExecutor {
   YARN = "yarn",
   NPM = "npx",
 }
 
-enum ApiProperty {
-  REQUIRED = "required: true",
-  OPTIONAL = "required: false",
+export enum ApiProperty {
+  REQUIRED = "required",
+  OPTIONAL = "optional",
   UNDOCUMENTED = "undocumented",
 }
 
@@ -30,7 +31,7 @@ enum PropertySqlType {
   BOOLEAN = "boolean"
 }
 
-class Entity {
+export class Entity {
   [key: string]: PropertySpec;
 }
 
@@ -80,27 +81,5 @@ export async function generateFromJSON(path: string): Promise<string> {
   const entityObject: Entity = JSON.parse(entityJson);
   await validateAndLogErrors(Entity, entityObject);
 
-  let propertiesString = "";
-  propertiesString += Object.keys(entityObject)
-    .map((key) => {
-      const property = entityObject[key];
-      const sizeString = property.size ? `, length: ${property.size}` : "";
-      let defaultString = "";
-      if (property.default !== undefined) {
-        if (typeof property.default === "string") {
-          defaultString = `, default: '${property.default}'`;
-        } else {
-          defaultString = `, default: ${property.default}`;
-        }
-      }
-      const apiProperty = property.annotations?.apiProperty;
-      const exclude = property.annotations?.exclude;
-      const apiPropertyString = apiProperty ? `@ApiProperty({ ${ApiProperty[apiProperty]} })\n` : "";
-      const excludeString = exclude ? "@Exclude()\n" : "";
-      return `${excludeString}${apiPropertyString}@Column({ type: '${property.sqlType}'${sizeString}${defaultString} })\n${key}: ${property.type};\n`;
-    })
-    .join("\n");
-  propertiesString += "\n}";
-
-  return propertiesString;
+  return JSONtoSchema(entityObject);
 }
