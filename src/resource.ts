@@ -6,7 +6,7 @@ import {
   toNestOptions,
 } from "./cli/resource";
 import { Logger } from "./logger";
-import { generateFromJSON, pathExists, Entity, ApiProperty } from "./fs";
+import { pathExists, ApiProperty, checkJSON } from "./fs";
 import fs from "fs";
 
 export async function generateNewResource(
@@ -66,7 +66,8 @@ async function hygenDependencies(
   );
 }
 
-export function JSONtoSchema(entityObject: Entity): string {
+export async function generateFromJSON(json: string): Promise<string> {
+  let entityObject = await checkJSON(json);
   return Object.entries(entityObject)
     .map(([key, property]) => {
       const sizeString = property.size ? `, length: ${property.size}` : "";

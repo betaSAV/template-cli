@@ -1,9 +1,8 @@
 import fs from "fs";
 import { Logger } from "./logger";
 import { execFunction } from "./process";
-import { IsAlpha, IsEnum, IsInt, IsOptional, IsPositive, isAlpha } from "class-validator";
+import { IsEnum, IsInt, IsOptional, IsPositive } from "class-validator";
 import { validateAndLogErrors } from "./validator";
-import { JSONtoSchema } from "./resource";
 
 enum PackageExecutor {
   YARN = "yarn",
@@ -76,10 +75,10 @@ export function pathExists(path: string): boolean {
   return fs.existsSync(path);
 }
 
-export async function generateFromJSON(path: string): Promise<string> {
+export async function checkJSON(path: string): Promise<Entity> {
   const entityJson = fs.readFileSync(path, "utf8");
   const entityObject: Entity = JSON.parse(entityJson);
   await validateAndLogErrors(Entity, entityObject);
 
-  return JSONtoSchema(entityObject);
+  return entityObject;
 }
