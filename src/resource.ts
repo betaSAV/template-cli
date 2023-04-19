@@ -42,7 +42,6 @@ export async function generateNewResource(
       }
     }
   } catch (err: any) {
-    Logger.error(`Something was wrong ${err}`);
     throw err;
   }
 }
