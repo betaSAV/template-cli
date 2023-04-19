@@ -19,15 +19,44 @@ enum PropertyType {
   STRING = "string",
   NUMBER = "number",
   BOOLEAN = "boolean",
-  DATE = "date",
-  ARRAY = "array",
+  DATE = "Date",
   OBJECT = "object",
 }
 
 enum PropertySqlType {
-  VARCHAR = "varchar",
+  BIT = "bit",
+  TINYINT = "tinyint",
+  SMALLINT = "smallint",
   INT = "integer",
-  BOOLEAN = "boolean"
+  BIGINT = "bigint",
+  DECIMAL = "decimal",
+  NUMERIC = "numeric",
+  FLOAT = "float",
+  REAL = "real",
+
+  DATE = "date",
+  TIME = "time",
+  DATETIME = "datetime",
+  TIMESTAMP = "timestamp",
+  YEAR = "year",
+
+  CHAR = "char",
+  VARCHAR = "varchar",
+  BOOLEAN = "boolean",
+  TEXT = "text",
+
+  NCHAR = "nchar",
+  NVARCHAR = "nvarchar",
+  NTEXT = "ntext",
+
+  BINARY = "binary",
+  VARBINARY = "varbinary",
+  IMAGE = "image",
+
+  CLOB = "clob",
+  BLOB = "blob",
+  XML = "xml",
+  JSON = "json",
 }
 
 export class Entity {
