@@ -76,16 +76,14 @@ export function pathExists(path: string): boolean {
 }
 
 export async function checkJSON(path: string): Promise<Entity> {
+  try {
   const entityJson = fs.readFileSync(path, "utf8");
   const entityObject: Entity = JSON.parse(entityJson);
   await validateAndLogErrors(Entity, entityObject);
-  Object.entries(entityObject).forEach(([key, property]) => {
-    if (!Object.values(PropertyType).includes(property.type)) {
-      throw new Error(`Property ${key} of JSON has an invalid type\nIt must be one of: ${Object.values(PropertyType).join(", ")}`);
-    }
-    if (!Object.values(PropertySqlType).includes(property.sqlType)) {
-      throw new Error(`Property ${key} of JSON has an invalid sqlType\nIt must be one of: ${Object.values(PropertySqlType).join(", ")}`);
-    }
-  });
+  await validateAndLogErrors(PropertySpec, entityObject);
   return entityObject;
+  } catch (err: any) {
+    throw err;
+  }
+  
 }
