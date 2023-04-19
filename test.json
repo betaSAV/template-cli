@@ -25,7 +25,7 @@
     }
   },
   "final": {
-    "type": "array",
+    "type": "test",
     "sqlType": "integer",
     "size": 256,
     "default": "",
