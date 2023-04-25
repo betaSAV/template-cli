@@ -4,7 +4,8 @@
     "sqlType": "integer",
     "default": null,
     "annotations": {
-      "exclude": true
+      "exclude": false,
+      "isString": true
     }
   },
   "name": {
@@ -12,7 +13,8 @@
     "sqlType": "varchar",
     "size": 256,
     "annotations": {
-      "apiProperty": "required"
+      "apiProperty": "required",
+      "isNotEmpty": true
     }
   },
   "email": {
@@ -30,7 +32,8 @@
     "size": 256,
     "default": "",
     "annotations": {
-      "apiProperty": "funcionar"
+      "apiProperty": "funcionar",
+      "exclude": true
     }
   }
 }

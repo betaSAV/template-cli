@@ -84,6 +84,8 @@ class PropertySpec {
 
 interface Annotations {
   exclude?: boolean;
+  isNotEmpty?: boolean;
+  isString?: boolean;
   apiProperty?: ApiProperty;
 }
 

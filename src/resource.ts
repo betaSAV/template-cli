@@ -14,6 +14,7 @@ export async function generateNewResource(
 ): Promise<void> {
   const optionString = optionsToArgs(choices.options, toNestOptions);
   let entityContent = "";
+  let createDtoContent = "";
 
   const originalDirectory = process.cwd();
   process.chdir(choices.options.project);
@@ -27,13 +28,19 @@ export async function generateNewResource(
     await hygenDependencies(choices.options, choices);
     if (choices.options.json) {
       if (pathExists(choices.options.json)) {
-        entityContent += await generateFromJSON(choices.options.json);
-        Logger.info(`entityContent: ${entityContent}`);
+        entityContent += await JSONtoEntity(choices.options.json);
+        createDtoContent += await JSONtoCreate(choices.options.json, choices.name);
+
         fs.writeFileSync(
          `./${choices.options.project}/src/${choices.name}/entities/${choices.name}.entity.ts`,
          entityContent,
          { flag: "a" }
         );
+        fs.writeFileSync(
+          `./${choices.options.project}/src/${choices.name}/entities/create-${choices.name}.dto.ts`,
+          createDtoContent,
+          { flag: "w" }
+         );
         await execFunction(
          `hygen entityContent add --name ${choices.name} --project ${choices.options.project}`
         );
@@ -65,7 +72,7 @@ async function hygenDependencies(
   );
 }
 
-export async function generateFromJSON(json: string): Promise<string> {
+export async function JSONtoEntity(json: string): Promise<string> {
   let entityObject = await checkJSON(json);
   return Object.entries(entityObject)
     .map(([key, property]) => {
@@ -93,3 +100,41 @@ export async function generateFromJSON(json: string): Promise<string> {
     })
     .join("\n")+ "}";
 }
+
+export async function JSONtoCreate(json: string, className: string): Promise<string> {
+  let entityObject = await checkJSON(json);
+  return `import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
+
+export class Create${className}Dto {
+    ${Object.entries(entityObject)
+    .map(([key, property]) => {
+      if (property.annotations?.exclude) {
+        return "";
+      }
+        let apiPropertyString = "";
+        const apiProperty = property.annotations?.apiProperty ?? ApiProperty.UNDOCUMENTED;
+        const exclude = property.annotations?.exclude;
+        if (apiProperty === ApiProperty.REQUIRED) {
+          apiPropertyString = `@ApiProperty()\n`;
+        } else if (apiProperty === ApiProperty.OPTIONAL) {
+          apiPropertyString = `@ApiPropertyOptional()\n`;
+          key += "?";
+        } else if (apiProperty === ApiProperty.UNDOCUMENTED) {
+          apiPropertyString = `@ApiHideProperty()\n`;
+      }
+      if (property.annotations?.isNotEmpty) {
+        apiPropertyString += `@IsNotEmpty()\n`;
+      }
+      if (property.annotations?.isString) {
+        apiPropertyString += `@IsString()\n`;
+      }
+        const excludeString = exclude ? "@Exclude()\n" : "";
+        return `${excludeString}${apiPropertyString}${key}: ${property.type};\n`;
+      })
+      .join("\n")}
+}`;
+  }
+
+
+
