@@ -15,10 +15,33 @@ export const validate = async <T>(
   );
 };
 
-export async function validateAndLogErrors<T>(validator: ClassConstructor<object>, value: T): Promise<void> {
+export async function validateAndLogErrors<T>(
+  validator: ClassConstructor<object>,
+  value: T
+): Promise<void> {
   const errors = await validate(validator, value);
   if (errors.length > 0) {
-    Logger.error(`Class constructor: ${validator.name}\n\t\t${errors.join(",\n\t")}`);
+    Logger.error(
+      `Class constructor: ${validator.name}\n\t\t${errors.join(",\n\t")}`
+    );
     throw new Error("Command validation failed");
+  }
+}
+
+export async function validateNestedAndLogErrors<T extends object>(
+  validator: ClassConstructor<object>,
+  plainObject: T
+): Promise<void> {
+  const errors = (
+    await Promise.all(
+      Object.values(plainObject).flatMap((v) => validate(validator, v))
+    )
+  ).flat();
+  console.log(errors);
+  if (errors.length > 0) {
+    Logger.error(
+      `Class constructor: ${validator.name}\n\t\t${errors.join(",\n\t")}`
+    );
+    throw new Error("Plain object validation failed");
   }
 }
