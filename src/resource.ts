@@ -38,7 +38,7 @@ export async function generateNewResource(
           { flag: "a" }
         );
         fs.writeFileSync(
-          `./${choices.options.project}/src/${choices.name}/entities/create-${choices.name}.dto.ts`,
+          `./${choices.options.project}/src/${choices.name}/dto/create-${choices.name}.dto.ts`,
           createDtoContent,
           { flag: "w" }
         );
