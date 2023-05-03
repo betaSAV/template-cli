@@ -17,40 +17,36 @@ export async function generateNewResource(
   const originalDirectory = process.cwd();
   process.chdir(choices.options.project);
 
-  try {
-    await nestResourceGenerate(optionString, choices);
-    if (choices.options.dryRun) {
-      return;
-    }
-    process.chdir(originalDirectory);
-    await hygenDependencies(choices.options, choices);
-    if (choices.options.json) {
-      if (pathExists(choices.options.json)) {
-        const entityContent = await JSONtoEntity(choices.options.json);
-        const createDtoContent = await JSONtoCreate(
-          choices.options.json,
-          choices.name
-        );
+  await nestResourceGenerate(optionString, choices);
+  if (choices.options.dryRun) {
+    return;
+  }
+  process.chdir(originalDirectory);
+  await hygenDependencies(choices.options, choices);
+  if (choices.options.json) {
+    if (pathExists(choices.options.json)) {
+      const entityContent = await JSONtoEntity(choices.options.json);
+      const createDtoContent = await JSONtoCreate(
+        choices.options.json,
+        choices.name
+      );
 
-        fs.writeFileSync(
-          `./${choices.options.project}/src/${choices.name}/entities/${choices.name}.entity.ts`,
-          entityContent,
-          { flag: "a" }
-        );
-        fs.writeFileSync(
-          `./${choices.options.project}/src/${choices.name}/dto/create-${choices.name}.dto.ts`,
-          createDtoContent,
-          { flag: "w" }
-        );
-        await execFunction(
-          `hygen entityContent add --name ${choices.name} --project ${choices.options.project}`
-        );
-      } else {
-        Logger.error(`File ${choices.options.json} does not exist`);
-      }
+      fs.writeFileSync(
+        `./${choices.options.project}/src/${choices.name}/entities/${choices.name}.entity.ts`,
+        entityContent,
+        { flag: "a" }
+      );
+      fs.writeFileSync(
+        `./${choices.options.project}/src/${choices.name}/dto/create-${choices.name}.dto.ts`,
+        createDtoContent,
+        { flag: "w" }
+      );
+      await execFunction(
+        `hygen entityContent add --name ${choices.name} --project ${choices.options.project}`
+      );
+    } else {
+      Logger.error(`File ${choices.options.json} does not exist`);
     }
-  } catch (err: any) {
-    throw err;
   }
 }
 async function nestResourceGenerate(

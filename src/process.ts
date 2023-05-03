@@ -42,8 +42,10 @@ async function readAndCheckOutput(process: ChildProcess): Promise<void> {
   try {
     await readOutput(process);
   } catch (err: any) {
-    Logger.error(`Process failed: ${process.spawnargs[4]}`);
-    Logger.error(`Something was wrong: ${err}`);
+    Logger.error(`Command '${process.spawnargs.pop()}' failed`);
+    if (!!err) {
+      Logger.error(`Error: ${err}`);
+    }
     throw err;
   }
 }

@@ -54,7 +54,7 @@ export const handleProjectCommand = async (
     await buildNewProject(choices);
     prettierFormat(choices.name);
   } catch (err: any) {
-    Logger.error(`Something was wrong: ${err.message}`);
+    Logger.error(`Build of project ${choices.name} failed`);
     process.exitCode = 1;
   }
 };
