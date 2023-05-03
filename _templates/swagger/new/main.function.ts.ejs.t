@@ -1,8 +1,8 @@
 ---
 inject: true
 to: <%= cwd %>/<%=project%>/src/main.ts
-skip_if: "SwaggerModule.setup"
-before: "^bootstrap()"
+skip_if: "bindSwaggerDocument "
+after: "}\n"
 ---
 const bindSwaggerDocument = (path: string, app: INestApplication) => {
   const config = new DocumentBuilder()
