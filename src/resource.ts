@@ -99,10 +99,11 @@ export async function JSONtoCreate(
   className: string
 ): Promise<string> {
   let entityObject = await checkJSON(json);
+  const entityName = capitalizeFirstLetter(className);
   return `import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class Create${className}Dto {
+export class Create${entityName}Dto {
     ${Object.entries(entityObject)
       .map(([key, property]) => {
         if (property.annotations?.exclude) {
@@ -135,4 +136,8 @@ function apiPropertyToString(property: any, type: string): string {
     }
   }
   return apiPropertyString;
+}
+
+function capitalizeFirstLetter(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
 }
