@@ -3,8 +3,6 @@ import { Logger } from "./logger";
 import { execFunction } from "./process";
 import { IsEnum, IsInt, IsOptional, IsPositive } from "class-validator";
 import {
-  validate,
-  validateAndLogErrors,
   validateNestedAndLogErrors,
 } from "./validator";
 

@@ -18,20 +18,23 @@ describe('Persistence Utils', () => {
     });
 
     it('should return default if optionals parameters are not set', () => {
-      expect(toFindOptions({})).toStrictEqual({
+      expect(toFindOptions({
+        page: 0
+      })).toStrictEqual({
         take: 6,
         skip: 0,
       });
     });
 
     it('should return correct sort', () => {
-      expect(
+      return expect(
         toFindOptions({
           limit: 10,
           offset: 10,
           sort: 'name',
           sortDirection: SortDirection.DESC,
-        }),
+          page: 0
+        })
       ).toStrictEqual({
         take: 10,
         skip: 10,
@@ -47,6 +50,7 @@ describe('Persistence Utils', () => {
           limit: 10,
           offset: 10,
           sort: 'name',
+          page: 0
         }),
       ).toStrictEqual({
         take: 10,
