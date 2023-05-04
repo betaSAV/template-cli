@@ -4,6 +4,9 @@ import { ProjectChoices, toNestOptions } from "./cli/project";
 import { Logger } from "./logger";
 
 export async function buildNewProject(choices: ProjectChoices) {
+  if (!choices.options) {
+    choices.options = {};
+  }
   const optionString = optionsToArgs(choices.options, toNestOptions);
 
   await nestProjectGenerate(optionString, choices);

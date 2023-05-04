@@ -18,7 +18,7 @@ export class ProjectChoices {
   @IsEnum(PackageManager)
   packageManager: PackageManager;
 
-  options: ProjectOptions;
+  options?: ProjectOptions;
 }
 
 export class ProjectOptions extends Options {
