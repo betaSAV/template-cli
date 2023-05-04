@@ -45,6 +45,7 @@ export class CLIBuilder {
       .arguments("<resourceName>")
       .option("-d, --dry-run", "Run through without making any changes")
       .option("-p, --project <project>", "Project to generate resource in")
+      .option("-j, --json <json>", "JSON file to generate resource from")
       .action(handleResourceCommand);
   }
 }

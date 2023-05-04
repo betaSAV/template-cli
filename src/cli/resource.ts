@@ -23,11 +23,14 @@ export class ResourceChoices {
 export class ResourceOptions extends Options {
   @IsAlpha()
   project: string;
+
+  json?: string;
 }
 
 export const toNestOptions: OptionsMapping<ResourceOptions> = {
   dryRun: "-d",
   project: "-p",
+  json: "-j",
 };
 
 export const handleResourceCommand = async (
@@ -55,7 +58,7 @@ export const handleResourceCommand = async (
     await generateNewResource(choices);
     prettierFormat(options.project);
   } catch (err: any) {
-    Logger.error(`Something was wrong: ${err.message}`);
+    Logger.error(`Build of resource ${choices.name} failed`);
     process.exitCode = 1;
   }
 };

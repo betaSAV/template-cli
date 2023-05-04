@@ -6,16 +6,11 @@ import { Logger } from "./logger";
 export async function buildNewProject(choices: ProjectChoices) {
   const optionString = optionsToArgs(choices.options, toNestOptions);
 
-  try {
-    await nestProjectGenerate(optionString, choices);
-    if (choices.options.dryRun) {
-      return;
-    }
-    await hygenDependencies(choices);
-  } catch (err: any) {
-    Logger.error(`Something was wrong ${err}`);
+  await nestProjectGenerate(optionString, choices);
+  if (choices.options.dryRun) {
     return;
   }
+  await hygenDependencies(choices);
 }
 
 async function nestProjectGenerate(
@@ -35,17 +30,11 @@ async function hygenDependencies(choices: ProjectChoices): Promise<void> {
     `hygen dependencies new --project ${projectName} --packageManager ${choices.packageManager}`
   );
   Logger.info(`Adding project controller (Generic controller)`);
-  await execFunction(
-    `hygen controller new --project ${projectName}`
-  );
+  await execFunction(`hygen controller new --project ${projectName}`);
   Logger.info(`Adding project persistence (Base Entity)`);
-  await execFunction(
-    `hygen persistence new --project ${projectName}`
-  );
+  await execFunction(`hygen persistence new --project ${projectName}`);
   Logger.info(`Adding TypeOrmModule to project module`);
-  await execFunction(
-    `hygen app new --project ${projectName}`
-  );
+  await execFunction(`hygen app new --project ${projectName}`);
   Logger.info(`Adding Helmet, Cors and Throttler to project module`);
   await execFunction(
     `hygen security apply --project ${projectName} --packageManager ${choices.packageManager}`
@@ -55,12 +44,9 @@ async function hygenDependencies(choices: ProjectChoices): Promise<void> {
     `hygen auth new --project ${projectName} --packageManager ${choices.packageManager}`
   );
   Logger.info(`Adding Swagger to the project`);
-  await execFunction(
-    `hygen swagger new --project ${projectName}`
-  );
+  await execFunction(`hygen swagger new --project ${projectName}`);
 }
 
 function cammelCaseToKebabCase(str: string): string {
   return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
 }
-    
