@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken, InjectRepository } from '@nestjs/typeorm';
 import {
-  FindConditions,
+  FindOptions,
   FindManyOptions,
   FindOneOptions,
   In,
@@ -63,7 +63,7 @@ describe('BasePersistence', () => {
 
   describe('find', () => {
     it('should call repository find with correct options', async () => {
-      let options = { where: { name: 'test' } } as FindConditions<BaseEntity>;
+      let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
       await dummyService.find(options);
       expect(repositoryMock.find).toHaveBeenCalledWith(options);
     });
@@ -88,8 +88,8 @@ describe('BasePersistence', () => {
   describe('findPaginated', () => {
     it('should call repository findAndCount with correct options', async () => {
       const paginationParams = { page: 1, limit: 10 };
-      const options = { where: { name: 'test' } };
-      await dummyService.findPaginated(paginationParams);
+      let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
+      await dummyService.findPaginated(paginationParams, options);
       expect(repositoryMock.findAndCount).toHaveBeenCalledWith({
         ...options,
         skip: 0,
@@ -109,9 +109,9 @@ describe('BasePersistence', () => {
   describe('findById', () => {
     it('should call repository findOne with correct id & options', async () => {
       let id = 'id';
-      let options = { where: { name: 'test' } } as FindOneOptions<BaseEntity>;
+      let options = { id: id, where: { name: 'test' } } as FindOneOptions<BaseEntity>;
       await dummyService.findById(id, options);
-      expect(repositoryMock.findOne).toHaveBeenCalledWith(id, options);
+      expect(repositoryMock.findOne).toHaveBeenCalledWith(options);
     });
   });
 
