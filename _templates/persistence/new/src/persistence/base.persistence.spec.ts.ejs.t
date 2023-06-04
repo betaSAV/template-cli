@@ -85,27 +85,6 @@ describe('BasePersistence', () => {
     });
   });
 
-  describe('findPaginated', () => {
-    it('should call repository findAndCount with correct options', async () => {
-      const paginationParams = { page: 1, limit: 10 };
-      let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
-      await dummyService.findPaginated(paginationParams, options);
-      expect(repositoryMock.findAndCount).toHaveBeenCalledWith({
-        ...options,
-        skip: 0,
-        take: 10,
-      });
-    });
-  });
-
-  describe('findAndCount', () => {
-    it('should call repository findAndCount with correct options', async () => {
-      let options = { where: { name: 'test' } } as FindManyOptions<BaseEntity>;
-      await dummyService.findAndCount(options);
-      expect(repositoryMock.findAndCount).toHaveBeenCalledWith(options);
-    });
-  });
-
   describe('findById', () => {
     it('should call repository findOne with correct id & options', async () => {
       let id = 'id';

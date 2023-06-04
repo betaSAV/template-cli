@@ -4,7 +4,7 @@ force: true
 skip_if: "BaseEntity"
 ---
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from 'src/persistence/base.entity';
+import { BaseEntity } from '../../persistence/base.entity';
 import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 

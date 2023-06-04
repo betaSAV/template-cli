@@ -1,0 +1,39 @@
+{
+  "test": {
+    "type": "number",
+    "sqlType": "integer",
+    "default": null,
+    "annotations": {
+      "exclude": false,
+      "isString": true
+    }
+  },
+  "name": {
+    "type": "string",
+    "sqlType": "varchar",
+    "size": 256,
+    "annotations": {
+      "apiProperty": "required",
+      "isNotEmpty": true
+    }
+  },
+  "email": {
+    "type": "string",
+    "sqlType": "varchar",
+    "size": 256,
+    "default": "",
+    "annotations": {
+      "apiProperty": "optional"
+    }
+  },
+  "final": {
+    "type": "Date",
+    "sqlType": "integer",
+    "size": 256,
+    "default": "",
+    "annotations": {
+      "apiProperty": "required",
+      "exclude": true
+    }
+  }
+}

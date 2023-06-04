@@ -4,7 +4,7 @@ unless_exists: true
 ---
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BasePersistence } from 'src/persistence/base.persistence';
+import { BasePersistence } from '../persistence/base.persistence';
 import { Repository } from 'typeorm';
 import { <%=Name%> } from './entities/<%=name%>.entity';
 
